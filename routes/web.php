@@ -23,3 +23,6 @@ Route::get('/login', [AuthController::class, 'login']);
 
 //regist view
 Route::get('/regist', [AuthController::class, 'regist']);
+
+// proses regist
+Route::post('/register',[AuthController::class, 'register']);
