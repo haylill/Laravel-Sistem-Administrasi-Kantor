@@ -6,9 +6,9 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
-
+## SET SESSION_LIFETIME=525600
 ## Next Project
- - Login & Register
+ - Login ->middleware authorize
  - Dashboard
  - Absensi
  - Laman Absen

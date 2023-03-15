@@ -31,7 +31,7 @@ class AuthController extends Controller
     
         ]);
     }
-
+    // proses regist
     public function register()
     {
             
@@ -39,7 +39,7 @@ class AuthController extends Controller
                 'nik' => 'required|numeric|unique:users|digits_between:16,16',                
                 'email' => 'required|email|unique:users',
                 'password' => 'required',
-                'mobile' => 'required|numeric|digits_between:10,13',
+                'mobile' => 'required|numeric|digits_between:10,13|unique:users',
                 'name' => 'required',
                 'address' => 'required',
                 'birthday' => 'required|date|before:today',
@@ -83,4 +83,81 @@ class AuthController extends Controller
             }
         
     }
+
+    //prosesLogin
+    public function prosesLogin(Request $request){
+        $user = User::where('email', $request->user)->first();
+        if($user == null){
+            $user = User::where('nik', $request->user)->first();
+            if($user == null){
+                $user = User::where('telp', $request->user)->first();
+                if($user == null){                    
+                    return redirect()->back()->with('message', 'User Not Found');
+                }else{
+                    //berhasil dengan telp
+                    if(!password_verify($request->password, $user->password)){
+                        return redirect()->back()->with('message', 'Password Salah');
+                    }else{
+                        $session = [
+                            'nik' => $user->nik,
+                            'email' => $user->email,
+                            'telp' => $user->telp,
+                            'nama' => $user->nama,
+                            'alamat' => $user->alamat,
+                            'tgl_lahir' => $user->tgl_lahir,
+                            'jenkel' => $user->jenkel,
+                            'id_agama' => $user->id_agama,
+                            'id_jabatan' => $user->id_jabatan,
+                            'level' => $user->level,
+                            'password' => $user->password                        
+                        ];
+                        session(['user' => $session]);
+                        return redirect('/');
+                    }
+                }
+            }else{
+                //berhasil dengan nik
+                if(!password_verify($request->password, $user->password)){
+                    return redirect()->back()->with('message', 'Password Salah');
+                }else{
+                    $session = [
+                        'nik' => $user->nik,
+                        'email' => $user->email,
+                        'telp' => $user->telp,
+                        'nama' => $user->nama,
+                        'alamat' => $user->alamat,
+                        'tgl_lahir' => $user->tgl_lahir,
+                        'jenkel' => $user->jenkel,
+                        'id_agama' => $user->id_agama,
+                        'id_jabatan' => $user->id_jabatan,
+                        'level' => $user->level,
+                        'password' => $user->password                        
+                    ];
+                    session(['user' => $session]);
+                    return redirect('/');
+                }
+            }
+        }else{
+            //berhasil dengan email
+            if(!password_verify($request->password, $user->password)){
+                return redirect()->back()->with('message', 'Password Salah');
+            }else{
+                $session = [
+                    'nik' => $user->nik,
+                    'email' => $user->email,
+                    'telp' => $user->telp,
+                    'nama' => $user->nama,
+                    'alamat' => $user->alamat,
+                    'tgl_lahir' => $user->tgl_lahir,
+                    'jenkel' => $user->jenkel,
+                    'id_agama' => $user->id_agama,
+                    'id_jabatan' => $user->id_jabatan,
+                    'level' => $user->level,
+                    'password' => $user->password                        
+                ];
+                session(['user' => $session]);
+                return redirect('/');
+            }
+        }
+    } 
 }
