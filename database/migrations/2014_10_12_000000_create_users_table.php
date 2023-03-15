@@ -19,16 +19,23 @@ class CreateUsersTable extends Migration
             $table->string('nama');
             $table->string('jenkel');
             $table->string('tgl_lahir');
-            $table->string('agama');
+            $table->bigInteger('id_agama')->unsigned();
+            $table->bigInteger('id_jabatan')->unsigned();
             $table->string('alamat');
             $table->string('telp');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('jabatan');
             $table->string('level');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('id_agama')->references('id_agama')->on('agamas');
+        });
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('id_jabatan')->references('id_jabatan')->on('jabatans');
         });
     }
 

@@ -15,13 +15,9 @@
 
 <body>
     <div id="auth">
-
         <div class="row h-100">
             <div class="col-lg-7 col-12">
                 <div id="auth-left">
-                    <div class="auth-logo">
-                        <a href="index.html"><img src="{{asset('assets/images/logo/logo.png')}}" alt="Logo"></a>
-                    </div>
                     @yield('content')
                 </div>
             </div>
