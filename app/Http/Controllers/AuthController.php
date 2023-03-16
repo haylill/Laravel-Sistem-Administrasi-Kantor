@@ -12,24 +12,33 @@ class AuthController extends Controller
     // login view
     public function login()
     {
-        return view('auth.login', ['title' => 'Login | Office Administration']);
+        if(session('user') != null)
+            return redirect('/');
+        else{
+            return view('auth.login', ['title' => 'Login | Office Administration']);
+        }
     }
 
     // regist view
     public function regist()
     {
-        //get data agama
-        $agama = agama::all();
-        $agama = $agama->pluck('nama_agama', 'id_agama');
-        //get data jabatan
-        $jabatan = jabatan::all();
-        $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
-        return view('auth.regist' , [
-            'title' => 'Regist | Office Administration',
-            'jabatan' => $jabatan,
-            'agama' => $agama
-    
-        ]);
+        if(session('user') != null)
+            return redirect('/');
+        else{
+
+            //get data agama
+            $agama = agama::all();
+            $agama = $agama->pluck('nama_agama', 'id_agama');
+            //get data jabatan
+            $jabatan = jabatan::all();
+            $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
+            return view('auth.regist' , [
+                'title' => 'Regist | Office Administration',
+                'jabatan' => $jabatan,
+                'agama' => $agama
+        
+            ]);
+        }
     }
     // proses regist
     public function register()
@@ -55,7 +64,7 @@ class AuthController extends Controller
             }
 
             $validatedData['password'] = bcrypt($validatedData['password']);
-            $validatedData['level'] = 'user';
+            $validatedData['level'] = 'User';
             // mengubah string religion dan jabatan menjadi integer
             $validatedData['id_agama'] = (int)$validatedData['religion'];
             $validatedData['id_jabatan'] = (int)$validatedData['jabatan'];
@@ -121,6 +130,7 @@ class AuthController extends Controller
                     return redirect()->back()->with('message', 'Password Salah');
                 }else{
                     $session = [
+                        'id' => $user->id, 
                         'nik' => $user->nik,
                         'email' => $user->email,
                         'telp' => $user->telp,
@@ -159,5 +169,12 @@ class AuthController extends Controller
                 return redirect('/');
             }
         }
-    } 
+    }
+
+    //logout
+    public function logout()
+    {
+        session()->forget('user');
+        return redirect('/login')->with('message', 'Logout Success');
+    }
 }

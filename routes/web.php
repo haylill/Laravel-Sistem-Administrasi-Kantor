@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use Illuminate\Support\Facades\Route;
 use Whoops\Run;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\dashController;
 use App\Models\User;
 /*
 |--------------------------------------------------------------------------
@@ -15,22 +17,8 @@ use App\Models\User;
 |
 */
 
-Route::get('/', function () {
-
-    // get nik from session
-    $nik = session()->get('user');
-    // get data user from nik
-    $user = User::where('nik', $nik)->first();
-    dd($nik);
-    if(auth()->user()){
-        return redirect('/login');
-        return view('welcome');
-    }else{
-    }
-    
-});
 //dashboard view
-// Route::get('/',);
+Route::get('/', [dashController::class,'index']);
 
 //login  view
 Route::get('/login', [AuthController::class, 'login']);
@@ -43,3 +31,9 @@ Route::post('/register',[AuthController::class, 'register']);
 
 //proses Login
 Route::post('/prosesLogin',[AuthController::class, 'prosesLogin']);
+
+//proses logout
+Route::post('/logout', [AuthController::class, 'logout']);
+
+//absent view
+Route::get('/absent', [AbsensiController::class, 'index']);
