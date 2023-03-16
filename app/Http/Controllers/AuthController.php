@@ -144,7 +144,7 @@ class AuthController extends Controller
                         'password' => $user->password                        
                     ];
                     session(['user' => $session]);
-                    return redirect('/');
+                    return redirect('/')->with('message', 'Success Login');
                 }
             }
         }else{
