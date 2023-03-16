@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\absensi;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AbsensiController extends Controller
 {
@@ -14,7 +15,17 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        //
+        $user = session()->get('user');
+        if($user){
+            // cari id berdasarkan nik
+            $id = User::where('nik', $user['nik'])->first();
+            // // cari data absen berdasarkan id dan di tanggal hari ini
+            // $absen = absensi::where('id_user', $id->id_karyawan)->whereDate('created_at', date('Y-m-d'))->first();
+            dd($id);
+            return view('dash.absent', ['title' => 'Absent | Office Administration']);
+        }else{
+            return redirect('/login');
+        }
     }
 
     /**

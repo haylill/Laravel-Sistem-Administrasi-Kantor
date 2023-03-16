@@ -1,3 +1,4 @@
+
 document.getElementById('basic').addEventListener('click', (e) => {
     Swal.fire('Any fool can use a computer')
 })
@@ -40,7 +41,9 @@ document.getElementById('info').addEventListener('click', (e) => {
         title: "Info"
     })
 })
+
 document.getElementById('question').addEventListener('click', (e) => {
+    console.log('question')
     Swal.fire({
         icon: "question",
         title: "Question"
