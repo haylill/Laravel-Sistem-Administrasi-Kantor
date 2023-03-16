@@ -20,9 +20,9 @@ class AbsensiController extends Controller
             // cari id berdasarkan nik
             $id = User::where('nik', $user['nik'])->first();
             // // cari data absen berdasarkan id dan di tanggal hari ini
-            // $absen = absensi::where('id_user', $id->id_karyawan)->whereDate('created_at', date('Y-m-d'))->first();
-            dd($id);
-            return view('dash.absent', ['title' => 'Absent | Office Administration']);
+            $absen = absensi::where('id_karyawan', $id->id_karyawan)->whereDate('created_at', date('Y-m-d'))->first();
+            $id = $id->id_karyawan;
+            return view('dash.absent', ['title' => 'Absent | Office Administration', 'absen' => $absen , 'id' => $id]);
         }else{
             return redirect('/login');
         }
@@ -35,7 +35,24 @@ class AbsensiController extends Controller
      */
     public function create()
     {
-        //
+        $user = session()->get('user');
+        if($user){
+            // insert data absent
+            $absen = new absensi;
+            $absen->id_karyawan = request('id_karyawan');
+            $absen->waktu = date('Y-m-d H:i:s');
+
+            if($absen->save())
+            {
+                return redirect('/absent')->with('message', 'Success Absent');                
+            }else{
+                return redirect('/absent')->with('error', 'Sorry,Error Absent');
+            }
+
+
+        }else{
+            return redirect('/login');
+        }
     }
 
     /**

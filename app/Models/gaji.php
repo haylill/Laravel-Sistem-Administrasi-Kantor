@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class gaji extends Model
 {
     use HasFactory;
+    protected $table = 'gaji';
 }

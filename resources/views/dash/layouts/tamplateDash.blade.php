@@ -33,6 +33,23 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
+                            @if (\Session::has('message'))
+                            <li class="sidebar-item">
+                                <div class="alert alert-success alert-dismissible show fade">
+                                    {!! \Session::get('message') !!}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+                            @if (\Session::has('error'))
+                                <div class="alert alert-danger alert-dismissible show fade">
+                                    {!! \Session::get('error') !!}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>                 
+                            </li>
+                            @endif
+
                         <li class="sidebar-title">Menu</li>
                         
                         <li class="sidebar-item {{

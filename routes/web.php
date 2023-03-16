@@ -37,3 +37,6 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 //absent view
 Route::get('/absent', [AbsensiController::class, 'index']);
+
+//proses absent 
+Route::post('/absensi', [AbsensiController::class, 'create']);

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class arsip extends Model
 {
     use HasFactory;
+    protected $table = 'arsip';
 }

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class tamu extends Model
 {
     use HasFactory;
+    protected $table = 'tamu';
 }

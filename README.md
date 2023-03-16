@@ -10,12 +10,9 @@
 ## SET SESSION_LIFETIME=525600
 
 ## Next Project
- - Login -> middleware authorize
- - Dashboard
- - Absensi
- - Laman Absen
- - Management Gaji
+ - middleware authorize
  - Crud Users
+ - Management Gaji
  - Crud Arsip Surat
  - Crud Tamu 
  - Crud Inventarisssss
