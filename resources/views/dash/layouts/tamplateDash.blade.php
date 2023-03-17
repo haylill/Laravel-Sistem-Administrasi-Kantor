@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-icons/bootstrap-icons.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/vendors/simple-datatables/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/iconly/bold.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/sweetalert2/sweetalert2.min.css')}}">
@@ -33,6 +34,16 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             @if (\Session::has('message'))
                             <li class="sidebar-item">
                                 <div class="alert alert-success alert-dismissible show fade">
@@ -119,28 +130,11 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-collection-fill"></i>
-                                <span>Extra Components</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="extra-component-avatar.html">Avatar</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="extra-component-sweetalert.html">Sweet Alert</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="extra-component-toastify.html">Toastify</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="extra-component-rating.html">Rating</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="extra-component-divider.html">Divider</a>
-                                </li>
-                            </ul>
+                        <li class="sidebar-item {{$title =='Users | Office Administration' ? 'active':''}}">
+                            <a href="/users" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Users</span>
+                            </a>                            
                         </li>
 
                         <li class="sidebar-item  has-sub">
@@ -458,8 +452,14 @@
     <script src="{{asset('assets/js/extensions/sweetalert2.js')}}"></script>
     <script src="{{asset('assets/vendors/apexcharts/apexcharts.js')}}"></script>
     <script src="{{asset('assets/js/pages/dashboard.js')}}"></script>
+    <script src="{{asset('assets/vendors/simple-datatables/simple-datatables.js')}}"></script>
     <script src="{{asset('assets/vendors/sweetalert2/sweetalert2.all.min.js')}}"></script>
     <script src="{{asset('assets/js/main.js')}}"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table1');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
 </body>
 
 </html>
