@@ -30,9 +30,6 @@ Route::get('/regist', [AuthController::class, 'regist']);
 // proses regist
 Route::post('/register',[AuthController::class, 'register']);
 
-// proses regist in page users
-Route::post('/registeruser',[AuthController::class, 'registeruser']);
-
 //proses Login
 Route::post('/prosesLogin',[AuthController::class, 'prosesLogin']);
 
@@ -47,3 +44,12 @@ Route::post('/absensi', [AbsensiController::class, 'create']);
 
 // users view
 Route::get('/users', [UserController::class, 'index']);
+
+//delete users
+Route::delete('/userdelete/{id}', [UserController::class, 'delete']);
+
+// proses regist in page users
+Route::post('/registeruser',[UserController::class, 'registeruser']);
+
+// proses update in page users
+Route::put('/userupdate',[UserController::class, 'updateuser']);

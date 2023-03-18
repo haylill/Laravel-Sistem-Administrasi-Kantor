@@ -90,55 +90,7 @@ class AuthController extends Controller
                 return redirect('/regist')->with('errors', 'Profile updated!');
             }
     }
-    public function registeruser()
-    {
-            
-            $validatedData = $this->validate(request(), [
-                'nik' => 'required|numeric|unique:users|digits_between:16,16',                
-                'email' => 'required|email|unique:users',
-                'password' => 'required',
-                'telp' => 'required|numeric|digits_between:10,13|unique:users',
-                'name' => 'required',
-                'address' => 'required',
-                'birthday' => 'required|date|before:today',
-                'gender' => 'required',
-                'religion' => 'required',
-                'jabatan' => 'required',
-            ]);
-            
-            if($validatedData['gender'] == "0"){
-                $validatedData['gender'] = "Laki-laki";
-            }else{
-                $validatedData['gender'] = "Perempuan";
-            }
-            
-            $validatedData['password'] = bcrypt($validatedData['password']);
-            $validatedData['level'] = 'User';
-            // mengubah string religion dan jabatan menjadi integer
-            $validatedData['id_agama'] = (int)$validatedData['religion'];
-            $validatedData['id_jabatan'] = (int)$validatedData['jabatan'];
-            //make new data
-            $insertData = [
-                'nik' => $validatedData['nik'],
-                'email' => $validatedData['email'],
-                'password' => $validatedData['password'],
-                'telp' => $validatedData['telp'],
-                'nama' => $validatedData['name'],
-                'alamat' => $validatedData['address'],
-                'tgl_lahir' => $validatedData['birthday'],
-                'jenkel' => $validatedData['gender'],
-                'id_agama' => $validatedData['id_agama'],
-                'id_jabatan' => $validatedData['id_jabatan'],
-                'level' => $validatedData['level'],
-            ];
-            //insert data
-            $user = User::create($insertData);
-            if($user){
-                return redirect('/users')->with('message', 'User created!');
-            }else{
-                return redirect('/users')->with('errors', 'User cannot created!');
-            }
-    }
+    
 
     //prosesLogin
     public function prosesLogin(Request $request){

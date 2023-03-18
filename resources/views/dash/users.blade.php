@@ -216,14 +216,64 @@
                                 <td>{{$user->level}}</td>
                                 <td>{{$user->alamat}}</td>
                                 <td>
-                                    <a href="/users/{{$user->id}}/edit" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
-                                    <form action="/users/{{$user->id}}" method="post" class="d-inline">
-                                        @method('delete')
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#user{{$user->nik}}"><i class="bi bi-pencil-square"></i></button>                                    
+                                    <form action="/userdelete/{{$user->nik}}" method="post" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        @method('delete')
+                                        <button type="submit" onclick="confirm('Are you sure to delete this data?')" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></button>
                                     </form>
                                 </td>
                             <tr>
+                                <div class="modal fade text-left" id="user{{$user->nik}}" tabindex="-1"
+                                role="dialog" aria-labelledby="myModalLabel130"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                                    role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary">
+                                            <h5 class="modal-title white" id="myModalLabel130">
+                                                Logout
+                                            </h5>
+                                            <button type="button" class="close"
+                                                data-bs-dismiss="modal" aria-label="Close">
+                                                <i data-feather="x"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/userupdate" method="post">
+                                                @csrf
+                                                @method('put')
+                                                <div class="modal-body">
+                                                    <label>NIK </label>
+                                                    <div class="form-group">
+                                                        <input type="number" placeholder="Your NIK"
+                                                            class="form-control" name="nikupdate" value="{{$user->nik}}" readonly>
+                                                    </div>
+                                                    <label>Level/Role </label>
+                                                    <div class="form-group">
+                                                        <select class="form-select" id="level" name="level" required>
+                                                            <option selected value="">Choose Level</option>
+                                                            <option value="Admin" {{$user->level=='Admin' ?'selected' :''}}>Admin</option>                                                            
+                                                            <option value="User" {{$user->level=='User' ?'selected' :''}}>User</option>                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-secondary"
+                                                        data-bs-dismiss="modal">
+                                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">Close</span>
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary ml-1">
+                                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">Update</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach                                             
                     </tbody>
                 </table>
