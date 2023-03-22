@@ -11,8 +11,8 @@
 
 ## Next Project
  - middleware authorize
- - Crud Users
- - Management Gaji
+ - absent -> management absent 
+ - Management Gaji (update and view "done" ) -> management Gaji 
  - Crud Arsip Surat
  - Crud Tamu 
  - Crud Inventarisssss

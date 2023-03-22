@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
                 DB::table('gaji')->where('id_karyawan', $user->id_karyawan)->update(['total_masuk' => $total_masuk]);
             }
         })->monthly();
-        // $schedule->command('inspire')->hourly();
+       
     }
 
     /**

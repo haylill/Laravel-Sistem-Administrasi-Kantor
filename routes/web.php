@@ -6,6 +6,7 @@ use Whoops\Run;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GajiController;
 use App\Models\User;
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,9 @@ Route::get('/absent', [AbsensiController::class, 'index']);
 //proses absent 
 Route::post('/absensi', [AbsensiController::class, 'create']);
 
+//view /management-absent 
+Route::get('/management-absent',[AbsensiController::class, 'absentmanagement']);
+
 // users view
 Route::get('/users', [UserController::class, 'index']);
 
@@ -53,3 +57,12 @@ Route::post('/registeruser',[UserController::class, 'registeruser']);
 
 // proses update in page users
 Route::put('/userupdate',[UserController::class, 'updateuser']);
+
+//view salary users
+Route::get('/salary-users', [GajiController::class,'index']);
+
+// proses update in page salary
+Route::put('/salaryupdate',[GajiController::class, 'updatesalary']);
+
+//view /salary-management
+Route::get('/salary-management', [GajiController::class,'salarymanagement']);

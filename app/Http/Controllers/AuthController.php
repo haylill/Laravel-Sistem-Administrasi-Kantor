@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\jabatan;
 use App\Models\agama;
 use App\Models\User;
+use App\Models\gaji;
 
 class AuthController extends Controller
 {
@@ -84,7 +85,16 @@ class AuthController extends Controller
             ];
             //insert data
             $user = User::create($insertData);
-            if($user){
+            //get id user
+            $iduser = User::where('nik', $validatedData['nik'])->first();
+            $iduser = $iduser->id_karyawan;
+            //insert data to table gaji data
+            $gaji = gaji::create([
+                'id_karyawan' => $iduser,
+                'gaji' => 0,
+                'bonus' => 0
+            ]);
+            if($user && $gaji){
                 return redirect('/login')->with('message', 'Profile updated!');
             }else{
                 return redirect('/regist')->with('errors', 'Profile updated!');
@@ -107,6 +117,7 @@ class AuthController extends Controller
                         return redirect()->back()->with('message', 'Password Salah');
                     }else{
                         $session = [
+                            'id' => $user->id_karyawan,
                             'nik' => $user->nik,
                             'email' => $user->email,
                             'telp' => $user->telp,
@@ -129,7 +140,7 @@ class AuthController extends Controller
                     return redirect()->back()->with('message', 'Password Salah');
                 }else{
                     $session = [
-                        'id' => $user->id, 
+                        'id' => $user->id_karyawan,
                         'nik' => $user->nik,
                         'email' => $user->email,
                         'telp' => $user->telp,
@@ -152,6 +163,7 @@ class AuthController extends Controller
                 return redirect()->back()->with('message', 'Password Salah');
             }else{
                 $session = [
+                    'id' => $user->id_karyawan,
                     'nik' => $user->nik,
                     'email' => $user->email,
                     'telp' => $user->telp,

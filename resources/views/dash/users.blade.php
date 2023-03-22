@@ -220,7 +220,7 @@
                                     <form action="/userdelete/{{$user->nik}}" method="post" class="d-inline">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" onclick="confirm('Are you sure to delete this data?')" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this data?');" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></button>
                                     </form>
                                 </td>
                             <tr>
@@ -232,7 +232,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header bg-primary">
                                             <h5 class="modal-title white" id="myModalLabel130">
-                                                Logout
+                                                Edit User
                                             </h5>
                                             <button type="button" class="close"
                                                 data-bs-dismiss="modal" aria-label="Close">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\absensi;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\jabatan;
 
 class AbsensiController extends Controller
 {
@@ -50,6 +51,23 @@ class AbsensiController extends Controller
             }
 
 
+        }else{
+            return redirect('/login');
+        }
+    }
+
+    public function absentmanagement(){
+        $user = session()->get('user');
+        if($user){
+            $absens = absensi::all();
+            $users = User::all();
+            // mengambil data bulan dan tahun di $absens
+            $date = $absens->pluck('created_at')->map(function($item){
+                return $item->format('m-Y');
+            })->unique()->toArray();
+
+            // dd($date);
+            return view('dash.absentmanagement', ['title' => 'Absence Management | Office Administration', 'absens' => $absens , 'users'=>$users , 'date' => $date]);
         }else{
             return redirect('/login');
         }

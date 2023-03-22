@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGajiTable extends Migration
+class Penggajian extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateGajiTable extends Migration
      */
     public function up()
     {
-        Schema::create('gaji', function (Blueprint $table) {
+        Schema::create('penggajian', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_karyawan')->unsigned();
-            $table->integer('gaji');
-            $table->integer('bonus');
+            $table->integer('total_masuk');
+            $table->integer('total_gaji');
             $table->timestamps();
         });
 
-        Schema::table('gaji', function (Blueprint $table) {
+        Schema::table('penggajian', function (Blueprint $table) {
             $table->foreign('id_karyawan')->references('id_karyawan')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -33,6 +33,6 @@ class CreateGajiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gaji');
+        //
     }
 }

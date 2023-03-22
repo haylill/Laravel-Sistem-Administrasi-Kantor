@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\jabatan;
 use App\Models\agama;
+use App\Models\gaji;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -65,13 +66,22 @@ class UserController extends Controller
                 'id_jabatan' => $validatedData['id_jabatan'],
                 'level' => $validatedData['level'],
             ];
-            //insert data
-            $user = User::create($insertData);
-            if($user){
-                return redirect('/users')->with('message', 'User created!');
-            }else{
-                return redirect('/users')->with('errors', 'User cannot created!');
-            }
+             //insert data
+             $user = User::create($insertData);
+             //get id user
+             $iduser = User::where('nik', $validatedData['nik'])->first();
+             $iduser = $iduser->id_karyawan;
+             //insert data to table gaji data
+             $gaji = gaji::create([
+                 'id_karyawan' => $iduser,                 
+                 'gaji' => 0,
+                 'bonus' => 0
+             ]);
+             if($user && $gaji){
+                 return redirect('/users')->with('message', 'Profile updated!');
+             }else{
+                 return redirect('/users')->with('errors', 'Profile updated!');
+             }
     }
 
     //delete data users
