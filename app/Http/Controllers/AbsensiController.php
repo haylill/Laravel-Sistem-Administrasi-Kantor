@@ -120,7 +120,12 @@ class AbsensiController extends Controller
                     'Content-Type' => 'text/csv',
                 );
 
-                return response()->download($filename, $filename, $headers);                
+                $download =  response()->download($filename, $filename, $headers);
+
+                //delete file after download
+                $download->deleteFileAfterSend(true);
+
+                return $download;
             }else{
                 // parsing data
                 $datacsv = array();                
@@ -161,7 +166,14 @@ class AbsensiController extends Controller
                 $headers = array(
                     'Content-Type' => 'text/csv',
                 );
-                return response()->download($filename, $filename, $headers);
+
+                $download =  response()->download($filename, $filename, $headers);
+
+                //delete file after download
+                $download->deleteFileAfterSend(true);
+
+                return $download;
+                
                 
             }
         }else{

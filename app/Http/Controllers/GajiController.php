@@ -111,7 +111,11 @@ class GajiController extends Controller
                 $headers = array(
                     'Content-Type' => 'text/csv',
                 );
-                return response()->download($filename, $filename, $headers);
+                $download = response()->download($filename, $filename, $headers);
+                // delete file
+                $download->deleteFileAfterSend(true);
+                
+                return $download;
             }else{
                 $penggajian = penggajian::whereMonth('created_at', substr($datereq, 0, 2))->whereYear('created_at', substr($datereq, 3, 4))->get();
                 $datacsv = array();
@@ -140,9 +144,17 @@ class GajiController extends Controller
                 $headers = array(
                     'Content-Type' => 'text/csv',
                 );
-                return response()->download($filename, $filename, $headers);
+
+                
+                $download = response()->download($filename, $filename, $headers);
+                // delete file
+                $download->deleteFileAfterSend(true);
+                
+                return $download;
                 
             }
+
+            
         }
     }
 
