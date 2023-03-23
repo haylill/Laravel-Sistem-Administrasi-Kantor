@@ -46,6 +46,9 @@ Route::post('/absensi', [AbsensiController::class, 'create']);
 //view /management-absent 
 Route::get('/management-absent',[AbsensiController::class, 'absentmanagement']);
 
+//proses /export-absent
+Route::post('/export-absent' , [AbsensiController::class, 'exportabsent']);
+
 // users view
 Route::get('/users', [UserController::class, 'index']);
 
@@ -66,3 +69,6 @@ Route::put('/salaryupdate',[GajiController::class, 'updatesalary']);
 
 //view /salary-management
 Route::get('/salary-management', [GajiController::class,'salarymanagement']);
+
+//proses /export-salary
+Route::post('/export-salary' ,[GajiController::class, 'exportsalary']);

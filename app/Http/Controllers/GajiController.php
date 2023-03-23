@@ -15,6 +15,8 @@ class GajiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // view salary users
     public function index()
     {
         if(session('user') != null){
@@ -29,6 +31,8 @@ class GajiController extends Controller
         }
     }
 
+
+    //proses Update salary
     public function updatesalary(){
         $nik = request()->nikupdate;
         $users = User::where('nik',$nik)->first();
@@ -52,6 +56,8 @@ class GajiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     // view salary management
     public function salarymanagement()
     {
         if(session('user') != null){
@@ -70,59 +76,74 @@ class GajiController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    // exportsalary 
+    public function exportsalary(){
+        $users = User::all();
+        $penggajian = penggajian::all();
+        if($penggajian->count()< 1){
+            return redirect('/salary-management')->with('error', 'Sorry, Data Salary Empty');
+        }else{
+            $datereq = request()->date;
+            if($datereq =='all'){
+                $datacsv = array();
+                foreach($users as $user){
+                    foreach($penggajian as $gaji){
+                        if($user->id_karyawan == $gaji->id_karyawan){
+                            //push data
+                            array_push($datacsv, array(
+                                'NIK' => $user->nik,
+                                'Name' => $user->nama,      
+                                'Email' => $user->email,
+                                'Total Entry' => $gaji->total_masuk,                          
+                                'Total Salary' => $gaji->total_gaji,                                
+                                'Date & Time' => $gaji->created_at->format('d-m-Y')
+                            ));
+                        }
+                    }
+                }
+                $filename = $datereq. " Salary-".date('d-m-Y').".csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('NIK', 'Name', 'Email', 'Total Entry', 'Total Salary', 'Date & Time'));
+                foreach($datacsv as $row) {
+                    fputcsv($handle, array ($row['NIK'], $row['Name'], $row['Email'], $row['Total Entry'], $row['Total Salary'], $row['Date & Time']));
+                }
+                fclose($handle);
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
+                return response()->download($filename, $filename, $headers);
+            }else{
+                $penggajian = penggajian::whereMonth('created_at', substr($datereq, 0, 2))->whereYear('created_at', substr($datereq, 3, 4))->get();
+                $datacsv = array();
+                foreach($users as $user){
+                    foreach($penggajian as $gaji){
+                        if($user->id_karyawan == $gaji->id_karyawan){
+                            //push data
+                            array_push($datacsv, array(
+                                'NIK' => $user->nik,
+                                'Name' => $user->nama,      
+                                'Email' => $user->email,
+                                'Total Entry' => $gaji->total_masuk,                          
+                                'Total Salary' => $gaji->total_gaji,                                
+                                'Date & Time' => $gaji->created_at->format('d-m-Y')
+                            ));
+                        }
+                    }
+                }
+                $filename = $datereq. " Salary-".date('d-m-Y').".csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('NIK', 'Name', 'Email', 'Total Entry', 'Total Salary', 'Date & Time'));
+                foreach($datacsv as $row) {
+                    fputcsv($handle, array ($row['NIK'], $row['Name'], $row['Email'], $row['Total Entry'], $row['Total Salary'], $row['Date & Time']));
+                }
+                fclose($handle);
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
+                return response()->download($filename, $filename, $headers);
+                
+            }
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\gaji  $gaji
-     * @return \Illuminate\Http\Response
-     */
-    public function show(gaji $gaji)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\gaji  $gaji
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(gaji $gaji)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\gaji  $gaji
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, gaji $gaji)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\gaji  $gaji
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(gaji $gaji)
-    {
-        //
-    }
 }

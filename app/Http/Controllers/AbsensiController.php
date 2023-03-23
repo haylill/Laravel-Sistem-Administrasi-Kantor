@@ -9,11 +9,7 @@ use App\Models\jabatan;
 
 class AbsensiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // view absennt 
     public function index()
     {
         $user = session()->get('user');
@@ -34,6 +30,7 @@ class AbsensiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // proses create absent insert
     public function create()
     {
         $user = session()->get('user');
@@ -56,6 +53,7 @@ class AbsensiController extends Controller
         }
     }
 
+    //view absent management 
     public function absentmanagement(){
         $user = session()->get('user');
         if($user){
@@ -73,59 +71,101 @@ class AbsensiController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    //proses exportabsent
+    public function exportabsent(){
+        $absens = absensi::all();
+        $users = User::all();
+        // check data if not null
+        if($absens->count() > 0){
+            $datereq = request()->date;
+            if($datereq != "all"){
+                $absens = absensi::whereMonth('created_at', substr($datereq, 0, 2))->whereYear('created_at', substr($datereq, 3, 4))->get();
+                // parsing data
+                $datacsv = array();
+                foreach($users as $user){
+                    foreach($absens as $absent){
+                        if($user->id_karyawan == $absent->id_karyawan){
+                            $jabatan = '';
+                            if($user->id_jabatan == 1){
+                                $jabatan = 'Direktur';
+                            }else if($user->id_jabatan == 2){
+                                $jabatan = 'Manager';
+                            }else if($user->id_jabatan == 3){
+                                $jabatan = 'Staff';
+                            }
+                            // push data ke array
+                            array_push($datacsv, array(
+                                'NIK' => $user->nik,
+                                'Name' => $user->nama,
+                                'Email' => $user->email,
+                                'Department' => $jabatan,
+                                'Date & Time' => $absent->created_at->format('d-m-Y H:i:s'),
+                            ));                            
+                        }
+                    }
+                }
+                // proses export csv
+                $dateformat = date('d-m-Y ');
+                $filename = $datereq ."Absent " .$dateformat.".csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('NIK', 'Name', 'Email', 'Department', 'Date & Time'));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\absensi  $absensi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(absensi $absensi)
-    {
-        //
-    }
+                foreach($datacsv as $row) {
+                    fputcsv($handle, array($row['NIK'], $row['Name'], $row['Email'], $row['Department'], $row['Date & Time']));
+                }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\absensi  $absensi
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(absensi $absensi)
-    {
-        //
-    }
+                fclose($handle);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\absensi  $absensi
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, absensi $absensi)
-    {
-        //
-    }
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\absensi  $absensi
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(absensi $absensi)
-    {
-        //
+                return response()->download($filename, $filename, $headers);                
+            }else{
+                // parsing data
+                $datacsv = array();                
+                foreach($users as $user){
+                    foreach($absens as $absent){
+                        if($user->id_karyawan == $absent->id_karyawan){
+                            $jabatan = '';
+                            if($user->id_jabatan == 1){
+                                $jabatan = 'Direktur';
+                            }else if($user->id_jabatan == 2){
+                                $jabatan = 'Manager';
+                            }else if($user->id_jabatan == 3){
+                                $jabatan = 'Staff';
+                            }
+                            // push data ke array
+                            array_push($datacsv, array(
+                                'NIK' => $user->nik,
+                                'Name' => $user->nama,
+                                'Email' => $user->email,
+                                'Department' => $jabatan,
+                                'Date & Time' => $absent->created_at->format('d-m-Y H:i:s'),
+                            ));                            
+                        }
+                    }
+                }
+                // proses export csv
+                $dateformat = date('d-m-Y');
+                $filename = $datereq ." Absent " .$dateformat.".csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('NIK', 'Name', 'Email', 'Department', 'Date & Time'));
+
+                foreach($datacsv as $row) {
+                    fputcsv($handle, array($row['NIK'], $row['Name'], $row['Email'], $row['Department'], $row['Date & Time']));
+                }
+
+                fclose($handle);
+
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
+                return response()->download($filename, $filename, $headers);
+                
+            }
+        }else{
+            return redirect('/absent-management')->with('error', 'Sorry, Data Absents is Empty');
+        }
     }
 }

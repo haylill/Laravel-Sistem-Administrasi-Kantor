@@ -11,8 +11,7 @@
 
 ## Next Project
  - middleware authorize
- - absent -> management absent 
- - Management Gaji (update and view "done" ) -> management Gaji 
+ - Create Events On Database Penggajian
  - Crud Arsip Surat
  - Crud Tamu 
  - Crud Inventarisssss
