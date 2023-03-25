@@ -7,7 +7,9 @@ use App\Models\jabatan;
 use App\Models\agama;
 use App\Models\User;
 use App\Models\gaji;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\facades\Mail;
+use App\Mail\SendMail;
 class AuthController extends Controller
 {
     // login view
@@ -187,5 +189,89 @@ class AuthController extends Controller
     {
         session()->forget('user');
         return redirect('/login')->with('message', 'Logout Success');
+    }
+
+    //forget pass
+    public function forgetpassword(){
+        if(session('user') != null){
+            return redirect('/');
+        }
+        return view('auth.forget',[
+           'title'=> 'Forget Password | Office Administration' 
+        ]);
+    }
+
+    //forget send email forget password
+    public function forgetproses(Request $request){
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+        ]);
+        $user = User::where('email', $validatedData['email'])->first();
+        if($user == null){
+            return redirect()->back()->with('message', 'Email Not Found');
+        }else{
+            $token = Str::random(60);            
+            //send email
+            $data =[
+                'name' => $user->nama,
+                'email' => $user->email,
+                'token' => $token
+            ];
+
+            try{             
+                Mail::to($user->email)->send(new SendMail($data));
+
+                User::where('email', $validatedData['email'])->update([
+                    'remember_token' => $token
+                ]);
+
+                return redirect('/login')->with('message', 'Check Your Email');
+            }
+            catch(\Exception $e){
+                return redirect('/login')->with('message', 'Something Wrong');
+            }            
+        }
+    }
+
+    // reset password view
+    public function resetpass( $email, $token){
+        if(session('user') != null){
+            return redirect('/');
+        }
+       
+        $user = User::where('email', $email)->first();
+        if($user == null){
+            return redirect('/login')->with('message', 'Something Wrong');
+        }else{
+            if($user->remember_token == $token){
+                return view('auth.reset',[
+                    'title'=> 'Reset Password | Office Administration',
+                    'email' => $email,
+                    'token' => $token
+                ]);
+            }else{
+                return redirect('/login')->with('message', 'Something Wrong');
+            }
+        }
+    }
+
+    //prosesreset
+    public function prosesreset(Request $request){        
+        if(strlen(request()->password) < 8){
+            return redirect()->back()->with('message', 'Password MIN 8 Character');
+        }
+
+        $user = User::where('email', request()->email)->first();
+        if($user == null){
+            return redirect()->back()->with('message', 'Something Wrong');
+        }else{
+            $password = password_hash(request()->password, PASSWORD_DEFAULT);
+            User::where('email', request()->email)->update([
+                'password' => $password,
+                'remember_token' => null
+            ]);
+            return redirect('/login')->with('message', 'Password Changed');
+
+        }
     }
 }

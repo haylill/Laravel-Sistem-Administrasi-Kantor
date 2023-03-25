@@ -12,17 +12,21 @@ class UserController extends Controller
     //view users
     public function index()
     {
-        $users = User::all();
-        //get data agama
-        $agama = agama::all();
-        $agama = $agama->pluck('nama_agama', 'id_agama');
-        //get data jabatan
-        $jabatan = jabatan::all();
-        $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
-        return view('dash.users', ['title'  => 'Users | Office Administration'
-                    ,'users' => $users,
-                    'jabatan' => $jabatan,
-                    'agama' => $agama]);
+        if(session('user') == null){
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
+        }else{
+            $users = User::all();
+            //get data agama
+            $agama = agama::all();
+            $agama = $agama->pluck('nama_agama', 'id_agama');
+            //get data jabatan
+            $jabatan = jabatan::all();
+            $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
+            return view('dash.users', ['title'  => 'Users | Office Administration'
+                        ,'users' => $users,
+                        'jabatan' => $jabatan,
+                        'agama' => $agama]);
+        }
     }
     //create data users in authController
     public function registeruser()

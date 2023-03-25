@@ -21,7 +21,7 @@ class AbsensiController extends Controller
             $id = $id->id_karyawan;
             return view('dash.absent', ['title' => 'Absent | Office Administration', 'absen' => $absen , 'id' => $id]);
         }else{
-            return redirect('/login');
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 
@@ -49,7 +49,7 @@ class AbsensiController extends Controller
 
 
         }else{
-            return redirect('/login');
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 
@@ -67,7 +67,7 @@ class AbsensiController extends Controller
             // dd($date);
             return view('dash.absentmanagement', ['title' => 'Absence Management | Office Administration', 'absens' => $absens , 'users'=>$users , 'date' => $date]);
         }else{
-            return redirect('/login');
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 

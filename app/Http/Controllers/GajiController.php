@@ -27,7 +27,7 @@ class GajiController extends Controller
         }
         else{
             
-            return view('auth.login', ['title' => 'Login | Office Administration']);
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 
@@ -72,7 +72,7 @@ class GajiController extends Controller
         }
         else{
             
-            return view('auth.login', ['title' => 'Login | Office Administration']);
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 

@@ -18,7 +18,7 @@ class dashController extends Controller
             return view('dash.index', ['title' => 'Dashboard | Office Administration']);
             // return view('dashboard.index', ['title' => 'Dashboard | Office Administration']);
         }else{
-            return redirect('/login');
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 }

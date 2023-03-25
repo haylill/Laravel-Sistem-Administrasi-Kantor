@@ -28,6 +28,18 @@ Route::get('/login', [AuthController::class, 'login']);
 //regist view
 Route::get('/regist', [AuthController::class, 'regist']);
 
+//forget password view
+Route::get('/forget-password',[AuthController::class,'forgetpassword']);
+
+//forget password PROSES
+Route::post('/prosesforget',[AuthController::class,'forgetproses']);
+
+//proses reset password view
+Route::get('/reset/{email}/{token}',[AuthController::class,'resetpass']);
+
+//proses prosesreset
+Route::post('/prosesreset',[AuthController::class,'prosesreset']);
+
 // proses regist
 Route::post('/register',[AuthController::class, 'register']);
 
