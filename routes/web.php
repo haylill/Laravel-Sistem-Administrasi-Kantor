@@ -25,8 +25,8 @@ Route::get('/', [dashController::class,'index']);
 //login  view
 Route::get('/login', [AuthController::class, 'login']);
 
-//regist view
-Route::get('/regist', [AuthController::class, 'regist']);
+// //regist view
+// Route::get('/regist', [AuthController::class, 'regist']);
 
 //forget password view
 Route::get('/forget-password',[AuthController::class,'forgetpassword']);
@@ -40,8 +40,8 @@ Route::get('/reset/{email}/{token}',[AuthController::class,'resetpass']);
 //proses prosesreset
 Route::post('/prosesreset',[AuthController::class,'prosesreset']);
 
-// proses regist
-Route::post('/register',[AuthController::class, 'register']);
+// // proses regist
+// Route::post('/register',[AuthController::class, 'register']);
 
 //proses Login
 Route::post('/prosesLogin',[AuthController::class, 'prosesLogin']);
@@ -84,3 +84,10 @@ Route::get('/salary-management', [GajiController::class,'salarymanagement']);
 
 //proses /export-salary
 Route::post('/export-salary' ,[GajiController::class, 'exportsalary']);
+
+
+// if no route found
+Route::fallback(function () {
+    return view('auth.notfound', ['title' => '404 | Office Administration' , 'url_base' => url('/')]);
+
+});

@@ -22,86 +22,86 @@ class AuthController extends Controller
         }
     }
 
-    // regist view
-    public function regist()
-    {
-        if(session('user') != null)
-            return redirect('/');
-        else{
+    // // regist view
+    // public function regist()
+    // {
+    //     if(session('user') != null)
+    //         return redirect('/');
+    //     else{
 
-            //get data agama
-            $agama = agama::all();
-            $agama = $agama->pluck('nama_agama', 'id_agama');
-            //get data jabatan
-            $jabatan = jabatan::all();
-            $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
-            return view('auth.regist' , [
-                'title' => 'Regist | Office Administration',
-                'jabatan' => $jabatan,
-                'agama' => $agama
+    //         //get data agama
+    //         $agama = agama::all();
+    //         $agama = $agama->pluck('nama_agama', 'id_agama');
+    //         //get data jabatan
+    //         $jabatan = jabatan::all();
+    //         $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
+    //         return view('auth.regist' , [
+    //             'title' => 'Regist | Office Administration',
+    //             'jabatan' => $jabatan,
+    //             'agama' => $agama
         
-            ]);
-        }
-    }
-    // proses regist
-    public function register()
-    {
+    //         ]);
+    //     }
+    // }
+    // // proses regist
+    // public function register()
+    // {
             
-            $validatedData = $this->validate(request(), [
-                'nik' => 'required|numeric|unique:users|digits_between:16,16',                
-                'email' => 'required|email|unique:users',
-                'password' => 'required',
-                'telp' => 'required|numeric|digits_between:10,13|unique:users',
-                'name' => 'required',
-                'address' => 'required',
-                'birthday' => 'required|date|before:today',
-                'gender' => 'required',
-                'religion' => 'required',
-                'jabatan' => 'required',
-            ]);
+    //         $validatedData = $this->validate(request(), [
+    //             'nik' => 'required|numeric|unique:users|digits_between:16,16',                
+    //             'email' => 'required|email|unique:users',
+    //             'password' => 'required',
+    //             'telp' => 'required|numeric|digits_between:10,13|unique:users',
+    //             'name' => 'required',
+    //             'address' => 'required',
+    //             'birthday' => 'required|date|before:today',
+    //             'gender' => 'required',
+    //             'religion' => 'required',
+    //             'jabatan' => 'required',
+    //         ]);
             
-            if($validatedData['gender'] == "0"){
-                $validatedData['gender'] = "Laki-laki";
-            }else{
-                $validatedData['gender'] = "Perempuan";
-            }
+    //         if($validatedData['gender'] == "0"){
+    //             $validatedData['gender'] = "Laki-laki";
+    //         }else{
+    //             $validatedData['gender'] = "Perempuan";
+    //         }
             
-            $validatedData['password'] = bcrypt($validatedData['password']);
-            $validatedData['level'] = 'User';
-            // mengubah string religion dan jabatan menjadi integer
-            $validatedData['id_agama'] = (int)$validatedData['religion'];
-            $validatedData['id_jabatan'] = (int)$validatedData['jabatan'];
-            //make new data
-            $insertData = [
-                'nik' => $validatedData['nik'],
-                'email' => $validatedData['email'],
-                'password' => $validatedData['password'],
-                'telp' => $validatedData['telp'],
-                'nama' => $validatedData['name'],
-                'alamat' => $validatedData['address'],
-                'tgl_lahir' => $validatedData['birthday'],
-                'jenkel' => $validatedData['gender'],
-                'id_agama' => $validatedData['id_agama'],
-                'id_jabatan' => $validatedData['id_jabatan'],
-                'level' => $validatedData['level'],
-            ];
-            //insert data
-            $user = User::create($insertData);
-            //get id user
-            $iduser = User::where('nik', $validatedData['nik'])->first();
-            $iduser = $iduser->id_karyawan;
-            //insert data to table gaji data
-            $gaji = gaji::create([
-                'id_karyawan' => $iduser,
-                'gaji' => 0,
-                'bonus' => 0
-            ]);
-            if($user && $gaji){
-                return redirect('/login')->with('message', 'Profile updated!');
-            }else{
-                return redirect('/regist')->with('errors', 'Profile updated!');
-            }
-    }
+    //         $validatedData['password'] = bcrypt($validatedData['password']);
+    //         $validatedData['level'] = 'User';
+    //         // mengubah string religion dan jabatan menjadi integer
+    //         $validatedData['id_agama'] = (int)$validatedData['religion'];
+    //         $validatedData['id_jabatan'] = (int)$validatedData['jabatan'];
+    //         //make new data
+    //         $insertData = [
+    //             'nik' => $validatedData['nik'],
+    //             'email' => $validatedData['email'],
+    //             'password' => $validatedData['password'],
+    //             'telp' => $validatedData['telp'],
+    //             'nama' => $validatedData['name'],
+    //             'alamat' => $validatedData['address'],
+    //             'tgl_lahir' => $validatedData['birthday'],
+    //             'jenkel' => $validatedData['gender'],
+    //             'id_agama' => $validatedData['id_agama'],
+    //             'id_jabatan' => $validatedData['id_jabatan'],
+    //             'level' => $validatedData['level'],
+    //         ];
+    //         //insert data
+    //         $user = User::create($insertData);
+    //         //get id user
+    //         $iduser = User::where('nik', $validatedData['nik'])->first();
+    //         $iduser = $iduser->id_karyawan;
+    //         //insert data to table gaji data
+    //         $gaji = gaji::create([
+    //             'id_karyawan' => $iduser,
+    //             'gaji' => 0,
+    //             'bonus' => 0
+    //         ]);
+    //         if($user && $gaji){
+    //             return redirect('/login')->with('message', 'Profile updated!');
+    //         }else{
+    //             return redirect('/regist')->with('errors', 'Profile updated!');
+    //         }
+    // }
     
 
     //prosesLogin
@@ -215,12 +215,11 @@ class AuthController extends Controller
             $data =[
                 'name' => $user->nama,
                 'email' => $user->email,
-                'token' => $token
-            ];
+                'token' => $token,
+                'base_url' => url('/'),            ];
 
             try{             
                 Mail::to($user->email)->send(new SendMail($data));
-
                 User::where('email', $validatedData['email'])->update([
                     'remember_token' => $token
                 ]);
@@ -271,7 +270,6 @@ class AuthController extends Controller
                 'remember_token' => null
             ]);
             return redirect('/login')->with('message', 'Password Changed');
-
         }
     }
 }
