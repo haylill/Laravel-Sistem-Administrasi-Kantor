@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\ArsipController;
 use Illuminate\Support\Facades\Route;
 use Whoops\Run;
 use App\Http\Controllers\AuthController;
@@ -85,9 +86,26 @@ Route::get('/salary-management', [GajiController::class,'salarymanagement']);
 //proses /export-salary
 Route::post('/export-salary' ,[GajiController::class, 'exportsalary']);
 
+// view in-mail
+Route::get('/in-mail', [ArsipController::class, 'inmail']);
+
+// add in-mail
+Route::post('/addmail' , [ArsipController::class, 'addmail']);
+
+//update in-mail
+Route::put('inmailup', [ArsipController::class, 'updateinmail']);
+
+//delet in-mail
+Route::delete('/inmaildelete/{id}', [ArsipController::class, 'deleteinmail']);
+
+//download file in out mail
+Route::get('/downloadfile/{file}', [ArsipController::class, 'download']);
+
+
+// view out-mail
+Route::get('/out-mail', [ArsipController::class, 'outmail']);
+
+
 
 // if no route found
-Route::fallback(function () {
-    return view('auth.notfound', ['title' => '404 | Office Administration' , 'url_base' => url('/')]);
-
-});
+Route::fallback(function () {return view('auth.notfound', ['title' => '404 | Office Administration' , 'url_base' => url('/')]);});
