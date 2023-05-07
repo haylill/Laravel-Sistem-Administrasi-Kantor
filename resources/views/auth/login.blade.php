@@ -33,5 +33,6 @@
             class="font-bold">Sign
             up</a>.</p>
     <p><a class="font-bold" href="auth-forgot-password.html">Forgot password?</a>.</p>
+    <p class="text-gray-600">Are you guest? <a href="/tamu" class="font-bold">Guest book</a>.</p>
 </div>
 @endsection

@@ -14,72 +14,47 @@ class InventarisController extends Controller
      */
     public function index()
     {
-        //
+        $inventaris= inventaris::all();
+        return view('dash.inventaris', ['title' => 'Inventaris | Office Administration'])->with('inventaris', $inventaris);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    //menyimpan data
+    public function input(Request $request)
     {
-        //
+        $requestData = $request->all();
+        inventaris::create([
+            'nama' => $request['nama'],
+            'jenis'=> $request['jenis'],
+            'jumlah'=>$request['jumlah'],
+            'tempat'=>($request['tempat']),
+            
+        ]);
+        return redirect('inventaris')->with('flash_message', 'Input Addedd!');  
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    // menghapus data user
+    public function hapus($id)
     {
-        //
+        $data=inventaris::find($id);
+        $data->delete();
+        return redirect()->back()->with('success', 'Berhasil Dihapus');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\inventaris  $inventaris
-     * @return \Illuminate\Http\Response
-     */
-    public function show(inventaris $inventaris)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\inventaris  $inventaris
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(inventaris $inventaris)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\inventaris  $inventaris
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, inventaris $inventaris)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\inventaris  $inventaris
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(inventaris $inventaris)
-    {
-        //
-    }
+   // menampilkan data inventaris yang mau di update
+   public function show($id)
+   {
+       $data=inventaris::find($id);
+    //    return view('dash.update_inventaris',compact('data'));
+       return view('dash.update_inventaris', ['title' => 'Inventaris | Office Administration'],compact('data'));
+   }
+   // menyimpan data inventaris yang telah diupdate
+   public function update(Request $request, $id)
+   {
+        $data=inventaris::find($id);
+        $data->nama=$request->get('nama');
+        $data->jenis=$request->get('jenis');
+        $data->jumlah=$request->get('jumlah');
+        $data->tempat=($request->get('tempat'));
+        $data->save();
+        return redirect()->route('inventaris');
+   }
 }

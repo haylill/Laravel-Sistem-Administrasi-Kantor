@@ -68,6 +68,14 @@
                                 <span>Absent</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{
+                            $title=='Inventaris | Office Administration' ? 'active' : ''
+                        }}">
+                            <a href="/inventaris" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-medical-fill"></i>
+                                <span>Inventaris</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-stack"></i>

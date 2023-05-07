@@ -68,7 +68,7 @@
             <div class="form-group has-icon-left" style="width: 100%">
                 <label for="mobile-id-icon">Mobile</label>
                 <div class="position-relative">
-                    <input type="number" class="form-control" name="mobile"
+                    <input type="number" class="form-control" name="telp"
                         placeholder="Mobile" id="mobile-id-icon" required>
                     <div class="form-control-icon">
                         <i class="bi bi-phone"></i>
