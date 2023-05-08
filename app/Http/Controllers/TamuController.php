@@ -13,20 +13,17 @@ class TamuController extends Controller
         return view('auth.tamu', ['title' => 'Tamu | Office Administration'])->with('tamu', $tamu);
     }
 
+    public function show()
+    {
+        $tamu= tamu::all();
+        return view('dash.tamuu', ['title' => 'Tamu | Office Administration'])->with('tamu', $tamu);
+    }
+
     //menyimpan data
     public function input(Request $request)
     {
-        $requestData = $request->all();
-        tamu::create([
-            'nama' => $request['nama'],
-            'waktu_kunjung'=> $request['waktu_kunjung'],
-            'jenkel'=>$request['jenkel'],
-            'telp'=>($request['telp']),
-            'email'=>($request['email']),
-            'alamat'=>$request['alamat'],
-            'tujuan'=>($request['tujuan']),
-            
-        ]);
-        return redirect('tamu')->with('flash_message', 'Input Addedd!'); 
+        // dd($request->all());
+        Tamu::create($request->all());
+        return redirect('tamu')->with('message', 'Input Addedd!');    
     }
 }

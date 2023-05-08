@@ -53,3 +53,4 @@ Route::get('/show/{id}', [InventarisController::class, 'show'])->name('show'); /
 //guest view
 Route::get('/tamu', [TamuController::class, 'index'])->name('tamu'); //halaman tamu
 Route::post('/input', [TamuController::class, 'input'])->name('input'); //simpan data tamu
+Route::get('/guest', [TamuController::class, 'show'])->name('guest'); //halaman guest

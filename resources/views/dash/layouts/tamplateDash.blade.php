@@ -76,6 +76,14 @@
                                 <span>Inventaris</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{
+                            $title=='Buku Tamu | Office Administration' ? 'active' : ''
+                        }}">
+                            <a href="/guest" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-medical-fill"></i>
+                                <span>Buku Tamu</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-stack"></i>
