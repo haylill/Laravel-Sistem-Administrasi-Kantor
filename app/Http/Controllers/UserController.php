@@ -88,6 +88,39 @@ class UserController extends Controller
              }
     }
 
+    // edit data user
+    public function edituser(Request $request){
+        $nik = request('nik');
+        $user = User::where('nik', $nik)->first();
+        // dd($user->nama);
+        
+        if( $request->editname != $user->nama || $request->editemail != $user->email || $request->editphone != $user->telp || $request->editalamat != $user->alamat){
+        
+            $user = User::where('nik', $nik)->update([
+                'nama' => $request->editname,
+                'email' => $request->editemail,
+                'telp' => $request->editphone,
+                'alamat' => $request->editalamat,
+            ]);
+
+            $sessionUser = session('user');
+            $sessionUser['nama'] = $request->editname;
+            $sessionUser['email'] = $request->editemail;
+            $sessionUser['telp'] = $request->editphone;
+            $sessionUser['alamat'] = $request->editalamat;
+            session(['user' => $sessionUser]);
+            
+            return redirect('/')->with('message', 'User Updated!');
+
+
+        }else{
+            return redirect('/')->with('error', 'User dont change!');
+        }
+
+    }
+
+
+
     //delete data users
     public function delete($nik)
     {

@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\AbsensiController;
-use App\Http\Controllers\ArsipController;
 use Illuminate\Support\Facades\Route;
 use Whoops\Run;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\ArsipController;
+use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GajiController;
+use App\Http\Controllers\TamuController;
 use App\Models\User;
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +70,9 @@ Route::get('/users', [UserController::class, 'index']);
 //delete users
 Route::delete('/userdelete/{id}', [UserController::class, 'delete']);
 
+// edit user
+Route::post('/edituserutama', [UserController::class, 'edituser']);
+
 // proses regist in page users
 Route::post('/registeruser',[UserController::class, 'registeruser']);
 
@@ -105,7 +110,18 @@ Route::get('/downloadfile/{file}', [ArsipController::class, 'download']);
 // view out-mail
 Route::get('/out-mail', [ArsipController::class, 'outmail']);
 
+//inventaris view
+Route::get('/inventaris', [InventarisController::class, 'index'])->name('inventaris'); //halaman inventaris
+Route::post('/input', [InventarisController::class, 'input'])->name('input'); //simpan data inventaris
+Route::get('/hapus/{id}', [InventarisController::class, 'hapus'])->name('hapus'); //hapus data inventaris
+Route::post('/update/{id}', [InventarisController::class, 'update'])->name('update'); //update data inventaris
+Route::get('/show/{id}', [InventarisController::class, 'show'])->name('show'); //menampilkan data update inventaris
 
+//guest view
+Route::get('/tamu', [TamuController::class, 'index'])->name('tamu'); //halaman tamu
+Route::post('/input', [TamuController::class, 'input'])->name('input'); //simpan data tamu
+Route::get('/guest', [TamuController::class, 'show'])->name('guest'); //halaman guest
 
 // if no route found
 Route::fallback(function () {return view('auth.notfound', ['title' => '404 | Office Administration' , 'url_base' => url('/')]);});
+

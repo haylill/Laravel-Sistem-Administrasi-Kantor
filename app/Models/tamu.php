@@ -9,4 +9,6 @@ class tamu extends Model
 {
     use HasFactory;
     protected $table = 'tamu';
+    protected $primaryKey = 'id';
+    protected $fillable = ['nama', 'waktu_kunjung', 'jenkel','alamat', 'telp', 'email', 'tujuan'];
 }

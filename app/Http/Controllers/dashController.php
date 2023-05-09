@@ -12,7 +12,7 @@ class dashController extends Controller
     {
         // get user from session
         $user = session()->get('user');
-        // dd($user['level']);
+      
         // get data user from user        
         if($user){            
             $data = User::where('id_karyawan', $user['id'])->get();

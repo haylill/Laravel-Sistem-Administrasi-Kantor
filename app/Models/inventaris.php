@@ -9,4 +9,6 @@ class inventaris extends Model
 {
     use HasFactory;
     protected $table = 'inventaris';
+    protected $primaryKey = 'id';
+    protected $fillable = ['nama', 'jenis', 'jumlah','tempat'];
 }

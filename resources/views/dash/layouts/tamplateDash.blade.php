@@ -82,56 +82,23 @@
                                 <span>Absent</span>
                             </a>
                         </li>
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-stack"></i>
-                                <span>Components</span>
+                        <li class="sidebar-item {{
+                            $title=='Inventaris | Office Administration' ? 'active' : ''
+                        }}">
+                            <a href="/inventaris" class='sidebar-link'>
+                                <i class="bi bi-building"></i>
+                                <span>Inventaris</span>
                             </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="component-alert.html">Alert</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-badge.html">Badge</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-breadcrumb.html">Breadcrumb</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-button.html">Button</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-card.html">Card</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-carousel.html">Carousel</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-dropdown.html">Dropdown</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-list-group.html">List Group</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-modal.html">Modal</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-navs.html">Navs</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-pagination.html">Pagination</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-progress.html">Progress</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-spinner.html">Spinner</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-tooltip.html">Tooltip</a>
-                                </li>
-                            </ul>
                         </li>
+                        <li class="sidebar-item {{
+                            $title=='Buku Tamu | Office Administration' ? 'active' : ''
+                        }}">
+                            <a href="/guest" class='sidebar-link'>
+                                <i class="bi bi-book-half"></i>
+                                <span>Guest Book</span>
+                            </a>
+                        </li>
+                    
 
                         <li class="sidebar-item {{$title =='Users | Office Administration' ? 'active':''}}">
                             <a href="/users" class='sidebar-link'>
@@ -211,6 +178,81 @@
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
             </div>
         </div>
+        
+        <!--Edit Profile Modal -->
+        <div class="modal fade text-left" id="dadaf" tabindex="-1"
+            role="dialog" aria-labelledby="myModalLabel130"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable"
+                role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title white" id="myModalLabel130">
+                            Edit Profile
+                        </h5>
+                        <button type="button" class="close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/edituserutama" method="post">
+                            @csrf
+                            <div class="form-group position-relative has-icon-left mb-4">
+                                <label for="nik">NIK</label>
+                                <input type="text" class="form-control form-control-xl" name="nik" value="{{session('user')['nik']}}" readonly>
+                                <div class="form-control-icon">
+                                    <i class="bi bi-credit-card"></i>
+                                </div>
+                            </div>
+                            <div class="form-group position-relative has-icon-left mb-4">
+                                <label for="editname">Name</label>
+                                <input type="text" class="form-control form-control-xl" name="editname" placeholder="Input Your Correct Name" value="{{session('user')['nama']}}" required>
+                                <div class="form-control-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group position-relative has-icon-left mb-4">
+                                <label for="editemail">Email</label>
+                                <input type="email" class="form-control form-control-xl" name="editemail" placeholder="Input Your Correct Email" value="{{session('user')['email']}}" required>
+                                <div class="form-control-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group position-relative has-icon-left mb-4">
+                                <label for="editphone">Phone</label>
+                                <input type="number" class="form-control form-control-xl" name="editphone" placeholder="Input Your Correct Phone Number" value="{{session('user')['telp']}}" required>
+                                <div class="form-control-icon">
+                                    <i class="bi bi-phone"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group position-relative has-icon-left mb-4">
+                                <label for="editalamat">Address</label>
+                                <input type="text" class="form-control form-control-xl" name="editalamat" placeholder="Input Your Correct Adress" value="{{session('user')['alamat']}}" required>
+                                <div class="form-control-icon">
+                                    <i class="bi bi-house"></i>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                            <button type="button"
+                                class="btn btn-light-secondary"
+                                data-bs-dismiss="modal">
+                                <i class="bx bx-x d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Close</span>
+                            </button>
+                            <button type="submit"  class="btn btn-primary ml-1">
+                                Accept
+                            </button>
+                        </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
         <!--info theme Modal -->
         <div class="modal fade text-left" id="info" tabindex="-1"
             role="dialog" aria-labelledby="myModalLabel130"
