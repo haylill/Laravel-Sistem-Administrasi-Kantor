@@ -104,6 +104,7 @@ class AuthController extends Controller
     // }
     
 
+
     //prosesLogin
     public function prosesLogin(Request $request){
         $user = User::where('email', $request->user)->first();

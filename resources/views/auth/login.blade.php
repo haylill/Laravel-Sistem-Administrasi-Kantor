@@ -29,5 +29,6 @@
 </form>
 <div class="text-center mt-5 text-lg fs-4">    
     <p><a class="font-bold" href="/forget-password">Forgot password?</a>.</p>
+    <p class="text-gray-600">Are you guest? <a href="/tamu" class="font-bold">Guest book</a>.</p>
 </div>
 @endsection

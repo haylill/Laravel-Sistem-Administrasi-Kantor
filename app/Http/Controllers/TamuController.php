@@ -11,12 +11,14 @@ class TamuController extends Controller
     {
         $tamu= tamu::all();
         return view('auth.tamu', ['title' => 'Guest Book | Office Administration'])->with('tamu', $tamu);
+
     }
 
     public function show()
     {
         $tamu= tamu::all();
         return view('dash.tamuu', ['title' => 'Guest Book | Office Administration'])->with('tamu', $tamu);
+
     }
 
     //menyimpan data

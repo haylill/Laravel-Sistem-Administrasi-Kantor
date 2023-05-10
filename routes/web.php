@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use Whoops\Run;
 use App\Http\Controllers\AbsensiController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GajiController;
+
 use App\Http\Controllers\TamuController;
 use App\Models\User;
 /*
@@ -110,6 +112,7 @@ Route::get('/downloadfile/{file}', [ArsipController::class, 'download']);
 // view out-mail
 Route::get('/out-mail', [ArsipController::class, 'outmail']);
 
+
 //inventaris view
 Route::get('/inventaris', [InventarisController::class, 'index'])->name('inventaris'); //halaman inventaris
 Route::post('/input', [InventarisController::class, 'input'])->name('input'); //simpan data inventaris
@@ -124,4 +127,5 @@ Route::get('/guest', [TamuController::class, 'show'])->name('guest'); //halaman 
 
 // if no route found
 Route::fallback(function () {return view('auth.notfound', ['title' => '404 | Office Administration' , 'url_base' => url('/')]);});
+
 
