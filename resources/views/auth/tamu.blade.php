@@ -32,7 +32,7 @@
         <input type="text" class="form-control" name="email" id="email"
             placeholder="Enter email">
         <label for="basicInput">Telp</label>
-        <input type="text" class="form-control" name="telp" id="telp"
+        <input type="number" class="form-control" name="telp" id="telp"
             placeholder="Enter telp">
         <label for="floatingTextarea">Alamat</label>
         <textarea class="form-control"

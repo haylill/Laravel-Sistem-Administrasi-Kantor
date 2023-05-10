@@ -15,7 +15,10 @@ class InventarisController extends Controller
     public function index()
     {
         $inventaris= inventaris::all();
-        return view('dash.inventaris', ['title' => 'Inventaris | Office Administration'])->with('inventaris', $inventaris);
+        $date = $inventaris->pluck('created_at')->map(function($item){
+            return $item->format('m-Y');
+        })->unique()->toArray();
+        return view('dash.inventaris', ['title' => 'Inventaris | Office Administration'])->with(['inventaris' => $inventaris, 'date' => $date]);
     }
 
     //menyimpan data
@@ -29,7 +32,7 @@ class InventarisController extends Controller
             'tempat'=>($request['tempat']),
             
         ]);
-        return redirect('inventaris')->with('flash_message', 'Input Addedd!');  
+        return redirect('inventaris')->with('message', 'Input Addedd!');  
     }
 
     // menghapus data user
@@ -37,7 +40,7 @@ class InventarisController extends Controller
     {
         $data=inventaris::find($id);
         $data->delete();
-        return redirect()->back()->with('success', 'Berhasil Dihapus');
+        return redirect()->back()->with('message', 'Berhasil Dihapus');
     }
    // menampilkan data inventaris yang mau di update
    public function show($id)
@@ -56,5 +59,70 @@ class InventarisController extends Controller
         $data->tempat=($request->get('tempat'));
         $data->save();
         return redirect()->route('inventaris');
+   }
+
+   public function exportinventaris(Request $request){
+        $invs = inventaris::all();
+        if($invs->count() <1 ){
+            return redirect('/inventaris')->with('error', 'Sorry, No data to export!');
+        }else{
+            $dateraq = $request->date;
+            if($dateraq =='all'){
+                $datacsv = array();
+                foreach($invs as $inv){                    
+                    //push data
+                    array_push($datacsv, array(                        
+                        'Name' => $inv->nama,      
+                        'Type' => $inv->jenis,
+                        'Count' => $inv->jumlah,
+                        'Place' => $inv->tempat,                    
+                        'Date & Time' => $inv->created_at->format('d-m-Y')
+                    ));                          
+                }
+                $filename = $dateraq. " Inventaris-".date('d-m-Y').".csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('Name', 'Type', 'Count', 'Place','Date & Time'));
+                foreach($datacsv as $row) {
+                    fputcsv($handle, array ($row['Name'], $row['Type'], $row['Count'], $row['Place'], $row['Date & Time']));
+                }
+                fclose($handle);
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
+                $download = response()->download($filename, $filename, $headers);
+                // delete file
+                $download->deleteFileAfterSend(true);
+                
+                return $download;
+            }else{
+                $invdate = inventaris::whereMonth('created_at', substr($dateraq, 0, 2))->whereYear('created_at', substr($dateraq, 3, 4))->get();
+                $datacsv = array();
+                foreach($invs as $inv){                    
+                    //push data
+                    array_push($datacsv, array(                        
+                        'Name' => $inv->nama,      
+                        'Type' => $inv->jenis,
+                        'Count' => $inv->jumlah,
+                        'Place' => $inv->tempat,                    
+                        'Date & Time' => $inv->created_at->format('d-m-Y')
+                    ));                          
+                }
+                $filename = $dateraq. " Inventaris-".date('d-m-Y').".csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('Name', 'Type', 'Count', 'Place','Date & Time'));
+                foreach($datacsv as $row) {
+                    fputcsv($handle, array ($row['Name'], $row['Type'], $row['Count'], $row['Place'], $row['Date & Time']));
+                }
+                fclose($handle);
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
+                $download = response()->download($filename, $filename, $headers);
+                // delete file
+                $download->deleteFileAfterSend(true);
+                
+                return $download;
+            }
+        }
    }
 }

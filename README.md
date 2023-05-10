@@ -9,8 +9,8 @@
 
 
 ## Next Progress
- - middleware authorize
- - Create Events On Database Penggajian
-
+ - middleware +
+ - event
+ - ngubah name input +
 ## About
 This Website For Exam RPL 2023, Build With `Laravel`
