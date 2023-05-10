@@ -91,7 +91,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{
-                            $title=='Buku Tamu | Office Administration' ? 'active' : ''
+                            $title=='Guest Book | Office Administration' ? 'active' : ''
                         }}">
                             <a href="/guest" class='sidebar-link'>
                                 <i class="bi bi-book-half"></i>
