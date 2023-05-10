@@ -2,69 +2,47 @@
     
 @section('content')
 <h1 class="auth-title">Guest Book</h1>
-
+@if (\Session::has('message'))
+<div class="alert alert-danger">    
+    <ul>
+        <li>{!! \Session::get('message') !!}</li>
+        
+    </ul>
+</div>
+@endif
 <form action="{{route('input')}}" method="post" enctype="multipart/form-data">
     {!! csrf_field() !!}
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="basicInput">Nama</label>
-                        <input type="text" class="form-control" name="nama" id="nama"
-                            placeholder="Enter nama">
-                    </div>
+        <div class="form-group position-relative has-icon-left mb-4">
 
-                    <div class="form-group">
-                        <label for="basicInput">Waktu Kunjung</label>
-                        <input type="date" class="form-control" name="waktu_kunjung" id="waktu_kunjung"
-                            placeholder="Enter waktu kunjung">
-                    </div>
+        <label for="basicInput">Nama</label>
+        <input type="text" class="form-control" name="nama" id="nama"
+            placeholder="Enter nama">
+        <label for="basicInput">Waktu Kunjung</label>
+        <input type="date" class="form-control" name="waktu_kunjung" id="waktu_kunjung"
+            placeholder="Enter waktu kunjung">
+        <label for="basicInput">Jenis Kelamin</label>
+        <fieldset class="form-group">
+            <select class="form-select" id="jenkel" name="jenkel">
+                <option>Laki- Laki</option>
+                <option>Perempuan</option>
+            </select>
+        </fieldset>
+        <label for="basicInput">Email</label>
+        <small class="text-muted">eg.<i>someone@example.com</i></small>
+        <input type="text" class="form-control" name="email" id="email"
+            placeholder="Enter email">
+        <label for="basicInput">Telp</label>
+        <input type="text" class="form-control" name="telp" id="telp"
+            placeholder="Enter telp">
+        <label for="floatingTextarea">Alamat</label>
+        <textarea class="form-control"
+            id="alamat" name="alamat"></textarea>
 
-                    <div class="form-group">
-                        <label for="basicInput">Jenis Kelamin</label>
-                        <fieldset class="form-group">
-                            <select class="form-select" id="jenkel" name="jenkel">
-                                <option>Laki- Laki</option>
-                                <option>Perempuan</option>
-                            </select>
-                        </fieldset>
-                    </div>                            
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="basicInput">Email</label>
-                        <small class="text-muted">eg.<i>someone@example.com</i></small>
-                        <input type="text" class="form-control" name="email" id="email"
-                            placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="basicInput">Telp</label>
-                        <input type="text" class="form-control" name="telp" id="telp"
-                            placeholder="Enter telp">
-                    </div>
-                </div>
-            </div>
+        <label>Tujuan</label>
+        <textarea class="form-control" id="tujuan" name="tujuan"
+            rows="3"></textarea>
 
-            <div class="row">
-                <div class="form-floating">
-                    <textarea class="form-control"
-                        id="alamat" name="alamat"></textarea>
-                    <label for="floatingTextarea">Alamat</label>
-                </div>
-            </div><br>
-
-            <div class="row">
-                <div class="form-group with-title mb-3">
-                    <textarea class="form-control" id="tujuan" name="tujuan"
-                        rows="3"></textarea>
-                    <label>Tujuan</label>
-                </div>
-            </div>
-            
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-                <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Submit</button>
     </div>
 </form>
 

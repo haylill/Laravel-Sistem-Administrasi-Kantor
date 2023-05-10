@@ -10,13 +10,15 @@ class TamuController extends Controller
     public function index()
     {
         $tamu= tamu::all();
-        return view('auth.tamu', ['title' => 'Tamu | Office Administration'])->with('tamu', $tamu);
+        return view('auth.tamu', ['title' => 'Guest Book | Office Administration'])->with('tamu', $tamu);
+
     }
 
     public function show()
     {
         $tamu= tamu::all();
-        return view('dash.tamuu', ['title' => 'Tamu | Office Administration'])->with('tamu', $tamu);
+        return view('dash.tamuu', ['title' => 'Guest Book | Office Administration'])->with('tamu', $tamu);
+
     }
 
     //menyimpan data

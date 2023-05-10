@@ -12,13 +12,22 @@ class dashController extends Controller
     {
         // get user from session
         $user = session()->get('user');
-        // dd($user['level']);
+      
         // get data user from user        
         if($user){            
-            return view('dash.index', ['title' => 'Dashboard | Office Administration']);
-            // return view('dashboard.index', ['title' => 'Dashboard | Office Administration']);
+            $data = User::where('id_karyawan', $user['id'])->get();
+             //get data agama
+             $agama = agama::all();
+             $agama = $agama->pluck('nama_agama', 'id_agama');
+             //get data jabatan
+             $jabatan = jabatan::all();
+             $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
+            return view('dash.index', ['title' => 'Dashboard | Office Administration',
+                                        'user' => $data,
+                                        'agama' => $agama,
+                                        'jabatan' => $jabatan]);
         }else{
-            return redirect('/login');
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 }

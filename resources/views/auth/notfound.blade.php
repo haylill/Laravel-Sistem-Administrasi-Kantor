@@ -9,26 +9,27 @@
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-icons/bootstrap-icons.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/app.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/pages/auth.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/pages/error.css')}}">
     <link rel="icon" type="image/x-icon" href="{{asset('assets\img\illustrations\rocket-white.png')}}">
+
+    
 </head>
 
 <body>
-    <div id="auth">
-        <div class="row h-100">
-            <div class="col-lg-7 col-12">
-                <div id="auth-left">
-                    @yield('content')
-                </div>
-            </div>
-            <div class="col-lg-5 d-none d-lg-block">
-                <div id="auth-right">
+    <div id="error">
+        <div class="error-page container">
+            <div class="col-md-8 col-12 offset-md-2" style=" align-items: center; justify-content: center;  text-align: center;">
+                <img class="img-error" src="{{asset('assets/images/samples/error-404.png')}}" style="width:50% ;" alt="Not Found">
+                <div class="text-center">
+                    <h1 class="error-title">NOT FOUND</h1>
+                    <p class='fs-5 text-gray-600'>The page you are looking not found.</p>
+                    <a href="{{$url_base}}" class="btn btn-lg btn-outline-primary mt-3">Go Home</a>
                 </div>
             </div>
         </div>
 
+
     </div>
 </body>
-<script src="{{asset('assets/js/main.js')}}"></script>
 
 </html>
