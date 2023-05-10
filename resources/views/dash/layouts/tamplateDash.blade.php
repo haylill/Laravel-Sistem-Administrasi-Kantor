@@ -66,6 +66,7 @@
 
                         <li class="sidebar-title">Menu</li>
                         
+                        @if(session('user')['level'] == 'User' )
                         <li class="sidebar-item {{
                             Request::is('/') ? 'active' : ''
                         }} ">
@@ -74,6 +75,7 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        @endif
                         <li class="sidebar-item {{
                             $title=='Absent | Office Administration' ? 'active' : ''
                         }}">
