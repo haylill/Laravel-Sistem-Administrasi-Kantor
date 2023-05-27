@@ -9,23 +9,28 @@ class TamuController extends Controller
 {
     public function index()
     {
-        $tamu= tamu::all();        
+        $tamu= tamu::all();
         return view('auth.tamu', ['title' => 'Guest Book | Office Administration'])->with('tamu', $tamu);
 
     }
 
     public function show()
     {
-        $tamu= tamu::all();
-        $date = $tamu->pluck('created_at')->map(function($item){
-            return $item->format('m-Y');
-        })->unique()->toArray();
-        return view('dash.tamuu', ['title' => 'Guest Book | Office Administration'])->with(
-            [
-                'tamu' => $tamu,
-                'date' => $date
-            ]
-        );
+        $user = session()->get('user');
+        if($user){
+            $tamu= tamu::all();
+            $date = $tamu->pluck('created_at')->map(function($item){
+                return $item->format('m-Y');
+            })->unique()->toArray();
+            return view('dash.tamuu', ['title' => 'Guest Book | Office Administration'])->with(
+                [
+                    'tamu' => $tamu,
+                    'date' => $date
+                ]
+            );
+        }else{
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
+        }
     }
 
     //menyimpan data
@@ -33,7 +38,7 @@ class TamuController extends Controller
     {
         // dd($request->all());
         Tamu::create($request->all());
-        return redirect('tamu')->with('message', 'Input Addedd!');    
+        return redirect('tamu')->with('message', 'Input Addedd!');
     }
 
     //export data
@@ -45,17 +50,17 @@ class TamuController extends Controller
             $datereq = $request->date;
             if($datereq == 'all'){
                 $datacsv = array();
-                foreach($tamus as $tamu){                    
+                foreach($tamus as $tamu){
                     //push data
-                    array_push($datacsv, array(                        
-                        'Name' => $tamu->nama,      
+                    array_push($datacsv, array(
+                        'Name' => $tamu->nama,
                         'Email' => $tamu->email,
                         'Phone' => $tamu->telp,
                         'Gender' => $tamu->jenkel,
-                        'Address' => $tamu->alamat,    
-                        'OBJECTIVE' => $tamu->tujuan,                            
+                        'Address' => $tamu->alamat,
+                        'OBJECTIVE' => $tamu->tujuan,
                         'Date & Time' => $tamu->created_at->format('d-m-Y H:i:s')
-                    ));                          
+                    ));
                 }
                 $filename = $datereq. " Guest-".date('d-m-Y').".csv";
                 $handle = fopen($filename, 'w+');
@@ -70,22 +75,22 @@ class TamuController extends Controller
                 $download = response()->download($filename, $filename, $headers);
                 // delete file
                 $download->deleteFileAfterSend(true);
-                
+
                 return $download;
             }else{
                 $tamudate = tamu::whereMonth('created_at', substr($datereq, 0, 2))->whereYear('created_at', substr($datereq, 3, 4))->get();
                 $datacsv = array();
-                foreach($tamudate as $tamu){                    
+                foreach($tamudate as $tamu){
                     //push data
-                    array_push($datacsv, array(                        
-                        'Name' => $tamu->nama,      
+                    array_push($datacsv, array(
+                        'Name' => $tamu->nama,
                         'Email' => $tamu->email,
                         'Phone' => $tamu->telp,
                         'Gender' => $tamu->jenkel,
-                        'Address' => $tamu->alamat,    
-                        'OBJECTIVE' => $tamu->tujuan,                            
+                        'Address' => $tamu->alamat,
+                        'OBJECTIVE' => $tamu->tujuan,
                         'Date & Time' => $tamu->created_at->format('d-m-Y H:i:s')
-                    ));                        
+                    ));
                 }
                 $filename = $datereq. " Guest-".date('d-m-Y').".csv";
                 $handle = fopen($filename, 'w+');
@@ -100,7 +105,7 @@ class TamuController extends Controller
                 $download = response()->download($filename, $filename, $headers);
                 // delete file
                 $download->deleteFileAfterSend(true);
-                
+
                 return $download;
 
             }

@@ -9,7 +9,7 @@ use App\Models\jabatan;
 
 class AbsensiController extends Controller
 {
-    // view absennt 
+    // view absennt
     public function index()
     {
         $user = session()->get('user');
@@ -42,7 +42,7 @@ class AbsensiController extends Controller
 
             if($absen->save())
             {
-                return redirect('/absent')->with('message', 'Success Absent');                
+                return redirect('/absent')->with('message', 'Success Absent');
             }else{
                 return redirect('/absent')->with('error', 'Sorry,Error Absent');
             }
@@ -53,19 +53,23 @@ class AbsensiController extends Controller
         }
     }
 
-    //view absent management 
+    //view absent management
     public function absentmanagement(){
         $user = session()->get('user');
         if($user){
-            $absens = absensi::all();
-            $users = User::all();
-            // mengambil data bulan dan tahun di $absens
-            $date = $absens->pluck('created_at')->map(function($item){
-                return $item->format('m-Y');
-            })->unique()->toArray();
+            if($user['id_jabatan'] == 1 || $user['id_jabatan'] == 2){
+                $absens = absensi::all();
+                $users = User::all();
+                // mengambil data bulan dan tahun di $absens
+                $date = $absens->pluck('created_at')->map(function($item){
+                    return $item->format('m-Y');
+                })->unique()->toArray();
 
-            // dd($date);
-            return view('dash.absentmanagement', ['title' => 'Absence Management | Office Administration', 'absens' => $absens , 'users'=>$users , 'date' => $date]);
+                // dd($date);
+                return view('dash.absentmanagement', ['title' => 'Absence Management | Office Administration', 'absens' => $absens , 'users'=>$users , 'date' => $date]);
+            }else{
+                return redirect('/')->with('message', 'Sorry, You dont have access to this page!');
+            }
         }else{
             return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
@@ -100,7 +104,7 @@ class AbsensiController extends Controller
                                 'Email' => $user->email,
                                 'Department' => $jabatan,
                                 'Date & Time' => $absent->created_at->format('d-m-Y H:i:s'),
-                            ));                            
+                            ));
                         }
                     }
                 }
@@ -128,7 +132,7 @@ class AbsensiController extends Controller
                 return $download;
             }else{
                 // parsing data
-                $datacsv = array();                
+                $datacsv = array();
                 foreach($users as $user){
                     foreach($absens as $absent){
                         if($user->id_karyawan == $absent->id_karyawan){
@@ -147,7 +151,7 @@ class AbsensiController extends Controller
                                 'Email' => $user->email,
                                 'Department' => $jabatan,
                                 'Date & Time' => $absent->created_at->format('d-m-Y H:i:s'),
-                            ));                            
+                            ));
                         }
                     }
                 }
@@ -173,8 +177,8 @@ class AbsensiController extends Controller
                 $download->deleteFileAfterSend(true);
 
                 return $download;
-                
-                
+
+
             }
         }else{
             return redirect('/absent-management')->with('error', 'Sorry, Data Absents is Empty');

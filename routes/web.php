@@ -57,10 +57,10 @@ Route::post('/logout', [AuthController::class, 'logout']);
 //absent view
 Route::get('/absent', [AbsensiController::class, 'index']);
 
-//proses absent 
+//proses absent
 Route::post('/absensi', [AbsensiController::class, 'create']);
 
-//view /management-absent 
+//view /management-absent
 Route::get('/management-absent',[AbsensiController::class, 'absentmanagement']);
 
 //proses /export-absent
@@ -115,7 +115,7 @@ Route::get('/out-mail', [ArsipController::class, 'outmail']);
 
 //inventaris view
 Route::get('/inventaris', [InventarisController::class, 'index'])->name('inventaris'); //halaman inventaris
-Route::post('/input', [InventarisController::class, 'input'])->name('input'); //simpan data inventaris
+Route::post('/inputinventaris', [InventarisController::class, 'input'])->name('inputinventaris'); //simpan data inventaris
 Route::get('/hapus/{id}', [InventarisController::class, 'hapus'])->name('hapus'); //hapus data inventaris
 Route::post('/update/{id}', [InventarisController::class, 'update'])->name('update'); //update data inventaris
 Route::get('/show/{id}', [InventarisController::class, 'show'])->name('show'); //menampilkan data update inventaris

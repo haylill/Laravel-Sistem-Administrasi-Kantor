@@ -12,28 +12,33 @@ class UserController extends Controller
     //view users
     public function index()
     {
-        if(session('user') == null){
-            return redirect('/login')->with('message', 'Sorry, You must login first!');
+        $user = session()->get('user');
+        if($user){
+            if($user['id_jabatan'] == 1 || $user['id_jabatan'] == 2){
+                $users = User::all();
+                //get data agama
+                $agama = agama::all();
+                $agama = $agama->pluck('nama_agama', 'id_agama');
+                //get data jabatan
+                $jabatan = jabatan::all();
+                $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
+                return view('dash.users', ['title'  => 'Users | Office Administration'
+                            ,'users' => $users,
+                            'jabatan' => $jabatan,
+                            'agama' => $agama]);
+            }else{
+                return redirect('/')->with('message', 'Sorry, You dont have access!');
+            }
         }else{
-            $users = User::all();
-            //get data agama
-            $agama = agama::all();
-            $agama = $agama->pluck('nama_agama', 'id_agama');
-            //get data jabatan
-            $jabatan = jabatan::all();
-            $jabatan = $jabatan->pluck('nama_jabatan', 'id_jabatan');
-            return view('dash.users', ['title'  => 'Users | Office Administration'
-                        ,'users' => $users,
-                        'jabatan' => $jabatan,
-                        'agama' => $agama]);
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
     //create data users in authController
     public function registeruser()
     {
-            
+
             $validatedData = $this->validate(request(), [
-                'nik' => 'required|numeric|unique:users|digits_between:16,16',                
+                'nik' => 'required|numeric|unique:users|digits_between:16,16',
                 'email' => 'required|email|unique:users',
                 'password' => 'required',
                 'telp' => 'required|numeric|digits_between:10,13|unique:users',
@@ -44,13 +49,13 @@ class UserController extends Controller
                 'religion' => 'required',
                 'jabatan' => 'required',
             ]);
-            
+
             if($validatedData['gender'] == "0"){
                 $validatedData['gender'] = "Laki-laki";
             }else{
                 $validatedData['gender'] = "Perempuan";
             }
-            
+
             $validatedData['password'] = bcrypt($validatedData['password']);
             $validatedData['level'] = 'User';
             // mengubah string religion dan jabatan menjadi integer
@@ -77,7 +82,7 @@ class UserController extends Controller
              $iduser = $iduser->id_karyawan;
              //insert data to table gaji data
              $gaji = gaji::create([
-                 'id_karyawan' => $iduser,                 
+                 'id_karyawan' => $iduser,
                  'gaji' => 0,
                  'bonus' => 0
              ]);
@@ -93,9 +98,9 @@ class UserController extends Controller
         $nik = request('nik');
         $user = User::where('nik', $nik)->first();
         // dd($user->nama);
-        
+
         if( $request->editname != $user->nama || $request->editemail != $user->email || $request->editphone != $user->telp || $request->editalamat != $user->alamat){
-        
+
             $user = User::where('nik', $nik)->update([
                 'nama' => $request->editname,
                 'email' => $request->editemail,
@@ -109,7 +114,7 @@ class UserController extends Controller
             $sessionUser['telp'] = $request->editphone;
             $sessionUser['alamat'] = $request->editalamat;
             session(['user' => $sessionUser]);
-            
+
             return redirect('/')->with('message', 'User Updated!');
 
 

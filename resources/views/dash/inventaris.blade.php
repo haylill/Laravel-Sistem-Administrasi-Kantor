@@ -1,5 +1,5 @@
 @extends('dash/layouts/tamplateDash')
-    
+
 @section('content')
 
 <div class="page-heading">
@@ -24,7 +24,7 @@
             <div class="card-header">
                 <h4 class="card-title">ADD INVENTARIS</h4>
             </div>
-            <form action="{{route('input')}}" method="post" enctype="multipart/form-data">
+            <form action="/inputinventaris" method="post" enctype="multipart/form-data">
             {!! csrf_field() !!}
                 <div class="card-body">
                     <div class="row">
@@ -34,7 +34,7 @@
                                 <input type="text" class="form-control" name="nama" id="nama"
                                     placeholder="Enter nama inventaris">
                             </div>
-    
+
                             <div class="form-group">
                                 <label for="basicInput">JENIS</label>
                                 <input type="text" class="form-control" name="jenis" id="jenis"
@@ -85,7 +85,7 @@
                                 <form action="/export-inventaris" method="post" style="width:100%">
                                     @csrf
                                     <div class="form-group has-icon-left" style="width: 100%">
-                                        <label for="first-name-icon">Date</label>                                        
+                                        <label for="first-name-icon">Date</label>
                                         <div class="form-group">
                                             <select class="form-select" id="date" name="date" required>
                                                 <option selected value="all">All The Time</option>
@@ -121,18 +121,20 @@
                                     <th>JENIS</th>
                                     <th>JUMLAH</th>
                                     <th>TEMPAT</th>
+                                    <th>TANGGAL INPUT</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($inventaris as $item)
                                 <tr>
-                                    <td class="text-bold-500">{{ $item->id }}</td>
+                                    <td class="text-bold-500">{{ $loop->index +1 }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td class="text-bold-500">{{ $item->jenis }}</td>
                                     <td>{{ $item->jumlah }}</td>
                                     <td>{{ $item->tempat }}</td>
-                                    <td><a href="{{route('hapus',$item->id)}}">Hapus</a> | <a href="{{route('show',$item->id)}}">Update</a></td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td><a href="{{route('hapus',$item->id)}}" onclick="return confirm('Are you sure you want to delete this data?');">Hapus</a> | <a href="{{route('show',$item->id)}}">Update</a></td>
 
                                 </tr>
                                 @endforeach

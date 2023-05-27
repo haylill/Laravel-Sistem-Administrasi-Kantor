@@ -14,25 +14,32 @@ class InventarisController extends Controller
      */
     public function index()
     {
-        $inventaris= inventaris::all();
-        $date = $inventaris->pluck('created_at')->map(function($item){
-            return $item->format('m-Y');
-        })->unique()->toArray();
-        return view('dash.inventaris', ['title' => 'Inventaris | Office Administration'])->with(['inventaris' => $inventaris, 'date' => $date]);
+        $user = session()->get('user');
+        if($user){
+
+            $inventaris= inventaris::all();
+            $date = $inventaris->pluck('created_at')->map(function($item){
+                return $item->format('m-Y');
+            })->unique()->toArray();
+            return view('dash.inventaris', ['title' => 'Inventaris | Office Administration'])->with(['inventaris' => $inventaris, 'date' => $date]);
+        }else{
+            return redirect('/login')->with('message', 'Sorry, You must login first!');
+        }
     }
 
     //menyimpan data
     public function input(Request $request)
     {
         $requestData = $request->all();
+        // dd($requestData);
         inventaris::create([
             'nama' => $request['nama'],
             'jenis'=> $request['jenis'],
             'jumlah'=>$request['jumlah'],
             'tempat'=>($request['tempat']),
-            
+
         ]);
-        return redirect('inventaris')->with('message', 'Input Addedd!');  
+        return redirect('inventaris')->with('message', 'Input Addedd!');
     }
 
     // menghapus data user
@@ -69,15 +76,15 @@ class InventarisController extends Controller
             $dateraq = $request->date;
             if($dateraq =='all'){
                 $datacsv = array();
-                foreach($invs as $inv){                    
+                foreach($invs as $inv){
                     //push data
-                    array_push($datacsv, array(                        
-                        'Name' => $inv->nama,      
+                    array_push($datacsv, array(
+                        'Name' => $inv->nama,
                         'Type' => $inv->jenis,
                         'Count' => $inv->jumlah,
-                        'Place' => $inv->tempat,                    
+                        'Place' => $inv->tempat,
                         'Date & Time' => $inv->created_at->format('d-m-Y')
-                    ));                          
+                    ));
                 }
                 $filename = $dateraq. " Inventaris-".date('d-m-Y').".csv";
                 $handle = fopen($filename, 'w+');
@@ -92,20 +99,20 @@ class InventarisController extends Controller
                 $download = response()->download($filename, $filename, $headers);
                 // delete file
                 $download->deleteFileAfterSend(true);
-                
+
                 return $download;
             }else{
                 $invdate = inventaris::whereMonth('created_at', substr($dateraq, 0, 2))->whereYear('created_at', substr($dateraq, 3, 4))->get();
                 $datacsv = array();
-                foreach($invs as $inv){                    
+                foreach($invs as $inv){
                     //push data
-                    array_push($datacsv, array(                        
-                        'Name' => $inv->nama,      
+                    array_push($datacsv, array(
+                        'Name' => $inv->nama,
                         'Type' => $inv->jenis,
                         'Count' => $inv->jumlah,
-                        'Place' => $inv->tempat,                    
+                        'Place' => $inv->tempat,
                         'Date & Time' => $inv->created_at->format('d-m-Y')
-                    ));                          
+                    ));
                 }
                 $filename = $dateraq. " Inventaris-".date('d-m-Y').".csv";
                 $handle = fopen($filename, 'w+');
@@ -120,7 +127,7 @@ class InventarisController extends Controller
                 $download = response()->download($filename, $filename, $headers);
                 // delete file
                 $download->deleteFileAfterSend(true);
-                
+
                 return $download;
             }
         }
