@@ -12,9 +12,8 @@ class dashController extends Controller
     {
         // get user from session
         $user = session()->get('user');
-      
-        // get data user from user        
-        if($user){            
+        // get data user from user
+        if($user){
             $data = User::where('id_karyawan', $user['id'])->get();
              //get data agama
              $agama = agama::all();

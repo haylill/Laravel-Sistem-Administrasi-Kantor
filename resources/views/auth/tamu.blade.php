@@ -1,12 +1,12 @@
 @extends('auth/layouts/tamplateAuth')
-    
+
 @section('content')
 <h1 class="auth-title">Guest Book</h1>
 @if (\Session::has('message'))
-<div class="alert alert-danger">    
+<div class="alert alert-danger">
     <ul>
         <li>{!! \Session::get('message') !!}</li>
-        
+
     </ul>
 </div>
 @endif
@@ -51,3 +51,4 @@
             class="font-bold">Back</a>.</p>
 </div>
 @endsection
+

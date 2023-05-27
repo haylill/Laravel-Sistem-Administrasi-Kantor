@@ -20,13 +20,17 @@ class GajiController extends Controller
     public function index()
     {
         if(session('user') != null){
-            $gajis = gaji::all();
-            $users = User::all();
-            return view('dash.salary', ['title' => 'Salary | Office Administration' , 'gajis' =>$gajis, 'users' => $users]);
-
+            $role = session('user')['id_jabatan'];
+            if($role == 1 || $role == 2){
+                $gajis = gaji::all();
+                $users = User::all();
+                return view('dash.salary', ['title' => 'Salary | Office Administration' , 'gajis' =>$gajis, 'users' => $users]);
+            }else{
+                return redirect('/')->with('message', 'Sorry, You dont have access!');
+            }
         }
         else{
-            
+
             return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
@@ -37,19 +41,19 @@ class GajiController extends Controller
         $nik = request()->nikupdate;
         $users = User::where('nik',$nik)->first();
         $iduser = $users->id_karyawan;
-        
+
         $gaji = request()->salaryupdate;
         $bonus = request()->bonusupdate;
-        
+
         $modelgaji = gaji::where('id_karyawan', $iduser)->first();
-        
+
         // check if gaji is updated
         if($modelgaji->gaji != $gaji || $modelgaji->bonus != $bonus){
             $gajiuser = gaji::where('id_karyawan', $iduser)->update(['gaji' => $gaji , 'bonus' => $bonus]);
             return redirect('/salary-users')->with('message', 'Salary Updated!');
         }else{
             return redirect('/salary-users')->with('error', 'Salary dont change!');
-        }        
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -61,22 +65,26 @@ class GajiController extends Controller
     public function salarymanagement()
     {
         if(session('user') != null){
-            $gajis = penggajian::all();
-            $users = User::all();
-            $date = $gajis->pluck('created_at')->map(function($item){
-                return $item->format('m-Y');
-            })->unique()->toArray();
+            $role = session('user')['id_jabatan'];
+            if($role == 1 || $role == 2){
+                $gajis = penggajian::all();
+                $users = User::all();
+                $date = $gajis->pluck('created_at')->map(function($item){
+                    return $item->format('m-Y');
+                })->unique()->toArray();
 
-            return view('dash.salarymanagement', ['title' => 'Salary Management | Office Administration' , 'gajis' =>$gajis, 'users' => $users , 'dates' => $date]);
-
+                return view('dash.salarymanagement', ['title' => 'Salary Management | Office Administration' , 'gajis' =>$gajis, 'users' => $users , 'dates' => $date]);
+            }else{
+                return redirect('/')->with('message', 'Sorry, You dont have access!');
+            }
         }
         else{
-            
+
             return redirect('/login')->with('message', 'Sorry, You must login first!');
         }
     }
 
-    // exportsalary 
+    // exportsalary
     public function exportsalary(){
         $users = User::all();
         $penggajian = penggajian::all();
@@ -92,10 +100,10 @@ class GajiController extends Controller
                             //push data
                             array_push($datacsv, array(
                                 'NIK' => $user->nik,
-                                'Name' => $user->nama,      
+                                'Name' => $user->nama,
                                 'Email' => $user->email,
-                                'Total Entry' => $gaji->total_masuk,                          
-                                'Total Salary' => $gaji->total_gaji,                                
+                                'Total Entry' => $gaji->total_masuk,
+                                'Total Salary' => $gaji->total_gaji,
                                 'Date & Time' => $gaji->created_at->format('d-m-Y')
                             ));
                         }
@@ -114,7 +122,7 @@ class GajiController extends Controller
                 $download = response()->download($filename, $filename, $headers);
                 // delete file
                 $download->deleteFileAfterSend(true);
-                
+
                 return $download;
             }else{
                 $penggajian = penggajian::whereMonth('created_at', substr($datereq, 0, 2))->whereYear('created_at', substr($datereq, 3, 4))->get();
@@ -125,10 +133,10 @@ class GajiController extends Controller
                             //push data
                             array_push($datacsv, array(
                                 'NIK' => $user->nik,
-                                'Name' => $user->nama,      
+                                'Name' => $user->nama,
                                 'Email' => $user->email,
-                                'Total Entry' => $gaji->total_masuk,                          
-                                'Total Salary' => $gaji->total_gaji,                                
+                                'Total Entry' => $gaji->total_masuk,
+                                'Total Salary' => $gaji->total_gaji,
                                 'Date & Time' => $gaji->created_at->format('d-m-Y')
                             ));
                         }
@@ -145,16 +153,16 @@ class GajiController extends Controller
                     'Content-Type' => 'text/csv',
                 );
 
-                
+
                 $download = response()->download($filename, $filename, $headers);
                 // delete file
                 $download->deleteFileAfterSend(true);
-                
+
                 return $download;
-                
+
             }
 
-            
+
         }
     }
 
