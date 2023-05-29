@@ -32,25 +32,25 @@
                             <div class="form-group">
                                 <label for="basicInput">NAMA</label>
                                 <input type="text" class="form-control" name="nama" id="nama"
-                                    placeholder="Enter nama inventaris">
+                                    placeholder="Enter nama inventaris" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="basicInput">JENIS</label>
                                 <input type="text" class="form-control" name="jenis" id="jenis"
-                                    placeholder="Enter jenis inventaris">
+                                    placeholder="Enter jenis inventaris" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="basicInput">JUMLAH</label>
                                 <input type="number" class="form-control" name="jumlah" id="jumlah"
-                                    placeholder="Enter jumlah inventaris">
+                                    placeholder="Enter jumlah inventaris" required>
                             </div>
                             <div class="form-group">
                                 <label for="basicInput">TEMPAT</label>
                                 <input type="text" class="form-control" name="tempat" id="tempat"
-                                    placeholder="Enter tempat inventaris">
+                                    placeholder="Enter tempat inventaris" required>
                             </div>
                         </div>
                     </div>

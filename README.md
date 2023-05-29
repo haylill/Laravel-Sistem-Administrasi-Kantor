@@ -1,14 +1,15 @@
 
 ## How To Run
+`Change Name File .env.example to .env`
 
 `SET SESSION_LIFETIME IN .env =525600`
 
-`php artisan db:seed`
-
 `php artisan migrate`
 
+`php artisan db:seed`
+
 ## Add Event On Database
-- Run this Comannd on SQL
+- Run this Comannd on SQL phpmyadmin
 ```
 DROP EVENT IF EXISTS `EvtGaji`; CREATE DEFINER=`root`@`localhost` EVENT `EvtGaji` ON SCHEDULE EVERY 1 MONTH STARTS '2023-06-01 00:00:00' ON COMPLETION PRESERVE ENABLE DO INSERT INTO penggajian (penggajian.id_karyawan,penggajian.total_masuk,penggajian.total_gaji,penggajian.created_at,penggajian.updated_at) SELECT absensi.id_karyawan,DATE_FORMAT(waktu, "%m") = DATE_FORMAT(CURDATE(),"%m") AS total_masuk,(CONVERT(DATE_FORMAT(waktu, "%m") = DATE_FORMAT(CURDATE(),"%m"),UNSIGNED INTEGER) * gaji) + bonus as total_gaji, NOW() as created_at ,NOW() as updated_at FROM absensi,users,gaji WHERE DATE_FORMAT(waktu, "%m") = DATE_FORMAT(CURDATE(),"%m") AND absensi.id_karyawan = users.id_karyawan and gaji.id_karyawan = users.id_karyawan;
 ```
