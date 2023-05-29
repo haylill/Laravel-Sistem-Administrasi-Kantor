@@ -49,23 +49,34 @@ class InventarisController extends Controller
         $data->delete();
         return redirect()->back()->with('message', 'Berhasil Dihapus');
     }
+
    // menampilkan data inventaris yang mau di update
    public function show($id)
    {
-       $data=inventaris::find($id);
-    //    return view('dash.update_inventaris',compact('data'));
-       return view('dash.update_inventaris', ['title' => 'Inventaris | Office Administration'],compact('data'));
+    if(session()->get('user')){
+        $data=inventaris::find($id);
+     //    return view('dash.update_inventaris',compact('data'));
+        return view('dash.update_inventaris', ['title' => 'Inventaris | Office Administration'],compact('data'));
+    }else{
+        return redirect('/login')->with('message', 'Sorry, You must login first!');
+    }
    }
    // menyimpan data inventaris yang telah diupdate
    public function update(Request $request, $id)
    {
+    // check apakah ada data yang berubah
+
         $data=inventaris::find($id);
-        $data->nama=$request->get('nama');
-        $data->jenis=$request->get('jenis');
-        $data->jumlah=$request->get('jumlah');
-        $data->tempat=($request->get('tempat'));
-        $data->save();
-        return redirect()->route('inventaris');
+        if($request->get('nama') != $data->nama || $request->get('jenis') != $data->jenis || $request->get('jumlah') != $data->jumlah || $request->get('tempat') != $data->tempat){
+            $data->nama=$request->get('nama');
+            $data->jenis=$request->get('jenis');
+            $data->jumlah=$request->get('jumlah');
+            $data->tempat=($request->get('tempat'));
+            $data->save();
+            return redirect()->route('inventaris')->with('message', 'Berhasil Diupdate');
+        }else{
+            return redirect()->route('inventaris')->with('message', 'Tidak ada data yang berubah');
+        }
    }
 
    public function exportinventaris(Request $request){

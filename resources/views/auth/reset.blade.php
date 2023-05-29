@@ -1,13 +1,13 @@
 @extends('auth/layouts/tamplateAuth')
-    
+
 @section('content')
 <h1 class="auth-title">Reset Password.</h1>
 <p class="auth-subtitle mb-5">Reset Password with your decision.</p>
 @if (\Session::has('message'))
-<div class="alert alert-danger">    
+<div class="alert alert-danger">
     <ul>
         <li>{!! \Session::get('message') !!}</li>
-        
+
     </ul>
 </div>
 @endif
@@ -26,8 +26,5 @@
     <p class="text-gray-600">have an account? <a href="/login"
             class="font-bold">Sign
             in</a>.</p>
-    <p class="text-gray-600">Don't have an account? <a href="/regist"
-            class="font-bold">Sign
-            up</a>.</p>    
 </div>
 @endsection
